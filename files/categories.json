@@ -1,0 +1,234 @@
+[
+  {
+    "id": 1,
+    "type": "ABBIGLIAMENTO"
+  },
+  {
+    "id": 2,
+    "type": "SUPERMERCATI-ALIMENTARI"
+  },
+  {
+    "id": 3,
+    "type": "CASALINGHI"
+  },
+  {
+    "id": 4,
+    "type": "PARRUCCHIERE"
+  },
+  {
+    "id": 5,
+    "type": "SCHEDINE"
+  },
+  {
+    "id": 6,
+    "type": "FERIE-VACANZE-GITE"
+  },
+  {
+    "id": 7,
+    "type": "CINEMA-TEATRO-AFFITTO FILM"
+  },
+  {
+    "id": 8,
+    "type": "FARMACIA"
+  },
+  {
+    "id": 9,
+    "type": "MEDICO-OSPEDALI"
+  },
+  {
+    "id": 10,
+    "type": "FIORAIO"
+  },
+  {
+    "id": 11,
+    "type": "CARBURANTE AUTO"
+  },
+  {
+    "id": 12,
+    "type": "RISTORANTI-PIZZERIE-BAR"
+  },
+  {
+    "id": 13,
+    "type": "FOTOGRAFO"
+  },
+  {
+    "id": 14,
+    "type": "AUTOVETTURA (BOLLO-ASS.-....)"
+  },
+  {
+    "id": 15,
+    "type": "BOLLETTA METANO"
+  },
+  {
+    "id": 16,
+    "type": "BOLLETTA ENERGIA ELETTRICA"
+  },
+  {
+    "id": 17,
+    "type": "."
+  },
+  {
+    "id": 18,
+    "type": "BOLLETTA ACQUA"
+  },
+  {
+    "id": 19,
+    "type": "GIORNALI-RIVISTE"
+  },
+  {
+    "id": 20,
+    "type": "PALESTRA-PISCINA"
+  },
+  {
+    "id": 21,
+    "type": "CARTOLERIA-TABACC-LIBRERIA"
+  },
+  {
+    "id": 22,
+    "type": "GELATERIE"
+  },
+  {
+    "id": 23,
+    "type": "LAVANDERIA TINTORIA"
+  },
+  {
+    "id": 24,
+    "type": "REGALI"
+  },
+  {
+    "id": 25,
+    "type": "PULIZIA SCALE"
+  },
+  {
+    "id": 26,
+    "type": "ICI - IMU - TASI"
+  },
+  {
+    "id": 27,
+    "type": "ABBON.RIVISTE"
+  },
+  {
+    "id": 28,
+    "type": "BOLLETTE VARIE"
+  },
+  {
+    "id": 29,
+    "type": "MOTORINO"
+  },
+  {
+    "id": 30,
+    "type": "GARAGE"
+  },
+  {
+    "id": 31,
+    "type": "RATA AUTO"
+  },
+  {
+    "id": 32,
+    "type": "ANIMALI (BEKY-SCHIZZO-LUNA)"
+  },
+  {
+    "id": 33,
+    "type": "RICARICA CELLULARE"
+  },
+  {
+    "id": 34,
+    "type": "LEONARDO"
+  },
+  {
+    "id": 35,
+    "type": "RATA CUCINA"
+  },
+  {
+    "id": 36,
+    "type": "ALESSANDRO"
+  },
+  {
+    "id": 37,
+    "type": "RATA MACCHINA FOTOGRAFICA"
+  },
+  {
+    "id": 38,
+    "type": "RATA ELETTROSTIMOLATORE"
+  },
+  {
+    "id": 39,
+    "type": "MERCERIA"
+  },
+  {
+    "id": 40,
+    "type": "BOLLETTA TELEFONICA"
+  },
+  {
+    "id": 41,
+    "type": "DANIELA"
+  },
+  {
+    "id": 42,
+    "type": "LAVORI CASA"
+  },
+  {
+    "id": 43,
+    "type": "FERRAMENTA"
+  },
+  {
+    "id": 44,
+    "type": "CAMERETTA"
+  },
+  {
+    "id": 45,
+    "type": "MANSARDA"
+  },
+  {
+    "id": 46,
+    "type": "RATA VIDEOCAMERA"
+  },
+  {
+    "id": 47,
+    "type": "RATA MACCHINA CUCIRE"
+  },
+  {
+    "id": 48,
+    "type": "RATA TELEVISORE+MONITOR"
+  },
+  {
+    "id": 49,
+    "type": "DIVANO SALA"
+  },
+  {
+    "id": 50,
+    "type": "APPARECCHIO ALESSANDRO"
+  },
+  {
+    "id": 51,
+    "type": "LEZIONI TENNIS"
+  },
+  {
+    "id": 52,
+    "type": "TV A PAGAMENTO"
+  },
+  {
+    "id": 53,
+    "type": "APPARECCHIO DANIELA"
+  },
+  {
+    "id": 54,
+    "type": "MACCHINA ACQUA"
+  },
+  {
+    "id": 55,
+    "type": "ALOE"
+  },
+  {
+    "id": 56,
+    "type": "ESTETISTA"
+  },
+  {
+    "id": 100,
+    "type": "VARIE"
+  },
+  {
+    "id": 999,
+    "type": "ENTRATE (segno -)"
+  }
+]
