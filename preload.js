@@ -16,5 +16,6 @@ contextBridge.exposeInMainWorld('electron', {
     getCategories: () => ipcRenderer.invoke('get-categories'),
     getNextIdByYear: (year) => ipcRenderer.invoke('get-next-available-id-by-year', year),
     newExpense: (expense, year) => ipcRenderer.send('new-expense', expense, year),
-    newInstallment: (installments, year) => ipcRenderer.send('new-installment', installments, year)
+    getExpensesByYear: (year) => ipcRenderer.invoke('get-expenses-by-year', year),
 })
+

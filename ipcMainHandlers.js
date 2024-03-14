@@ -62,6 +62,15 @@ function ipcMainHandlers() {
             console.error(error)
         }
     })
+
+    ipcMain.handle('get-expenses-by-year', async (event, year) => {
+        const directory = path.join(__dirname, 'files', 'expenses', `SPESE${year}.json`)
+        try {
+            return await fs_extra.readJson(directory)
+        } catch (error) {
+            console.error(error)
+        }
+    })
 }
 
 module.exports = {ipcMainHandlers}

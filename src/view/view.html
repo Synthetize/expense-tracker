@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Visualizza spese</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <select id="year-options"></select>
+    <input type="date" id="from-date">
+    <input type="date" id="to-date">
+    <button id="apply-filter">Apply</button>
+    <form id="radio-form">
+        <input type="radio" id="none" name="option" value="none">
+        <label for="amount">None</label><br>
+        <input type="radio" id="amount" name="option" value="amount">
+        <label for="amount">Order by amount</label><br>
+        <input type="radio" id="date" name="option" value="date">
+        <label for="date">Order by date</label><br>
+        <input type="radio" id="type" name="option" value="type">
+        <label for="type">Order by type</label><br>
+    </form>
+    <script src="view.js"></script>
+    <table id="expenses-table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Subject</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody id="table-body">
+        </tbody>
+    </table>
+</body>
+</html>
