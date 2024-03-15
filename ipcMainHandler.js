@@ -2,7 +2,7 @@ const {ipcMain} = require('electron')
 const path = require('path')
 const fs = require('fs')
 const fs_extra = require('fs-extra')
-function ipcMainHandlers() {
+function ipcMainHandler() {
     ipcMain.handle('get-years', async () => {
         const directory = path.join(__dirname, 'files', 'expenses')
         const years = []
@@ -71,6 +71,7 @@ function ipcMainHandlers() {
             console.error(error)
         }
     })
+
 }
 
-module.exports = {ipcMainHandlers}
+module.exports = {ipcMainHandler}
