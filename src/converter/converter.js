@@ -12,13 +12,12 @@ async function convert() {
     const year_expenses = await window.electron.getOldFilesExpenses();
     //year_expenses is an object with the year and the expenses, a string with all the expenses concatenated
     for (const object of year_expenses) {
-        let convertedExpensesToJSON = []
-        for (let i = 0; i < object.expenses.length; i++) {
-            const line = object.expenses.substring(0, 435).trim()
-            object.expenses = object.expenses.substring(435)
-            const expense = await convertToJSON(line)
-            convertedExpensesToJSON.push(expense)
+        let convertedExpensesToJSON = [];
+        for (let i = 0; i < object.expenses.length / 436; i++) {
+            let line = object.expenses.substring(i * 436, (i + 1) * 436);
+            convertedExpensesToJSON.push(await convertToJSON(line));
         }
+
         await window.electron.createExpenseJSONFile(convertedExpensesToJSON, object.year)
     }
 }
@@ -42,12 +41,17 @@ async function convertToJSON(line) {
                 return categories[i].type;
             }
         }
+        return 'UNKNOWN';
     }
 
     const amount = () => {
         let amount = line.substring(24, 36).replace(/^0+/, ''); // 12 characters for the amount (9 integers and 3 decimals)
-        let formattedStringNumber = amount.substring(0, amount.length - 3) + '.' + amount.substring(amount.length - 3);
-        return parseFloat(formattedStringNumber);
+        if (amount[amount.length - 1] === '}') {
+            amount = amount.replace('}', '0');
+            return parseFloat('-' + amount.substring(0, amount.length - 3) + '.' + amount.substring(amount.length - 3));
+        }
+        return parseFloat(amount.substring(0, amount.length - 3) + '.' + amount.substring(amount.length - 3));
+
     }
 
     return {

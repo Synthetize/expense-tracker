@@ -1,10 +1,11 @@
-const {ipcMain} = require('electron')
+const {ipcMain, BrowserWindow} = require('electron')
 const path = require('path')
 const fs = require('fs')
 const fs_extra = require('fs-extra')
+
 function ipcMainHandler() {
     ipcMain.handle('get-years', async () => {
-        const directory = path.join(__dirname, 'files', 'expenses')
+        const directory = path.join(__dirname, '..', 'files', 'expenses')
         const years = []
         fs.readdirSync(directory).forEach(file => {
             let year = file.match(/\d+/)[0]
@@ -15,7 +16,7 @@ function ipcMainHandler() {
 
     ipcMain.handle('get-subjects', async () => {
         try {
-            return await fs_extra.readJson(path.join(__dirname, 'files', 'subjects.json'))
+            return await fs_extra.readJson(path.join(__dirname, '..', 'files', 'subjects.json'))
         } catch (error) {
             console.error(error)
         }
@@ -23,14 +24,14 @@ function ipcMainHandler() {
 
     ipcMain.handle('get-categories', async () => {
         try {
-            return await fs_extra.readJson(path.join(__dirname, 'files', 'categories.json'))
+            return await fs_extra.readJson(path.join(__dirname, '..', 'files', 'categories.json'))
         } catch (error) {
             console.error(error)
         }
     })
 
     ipcMain.handle('get-next-available-id-by-year', async (event, year) => {
-        const directory = path.join(__dirname, 'files', 'expenses', `SPESE${year}.json`)
+        const directory = path.join(__dirname, '..', 'files', 'expenses', `SPESE${year}.json`)
         try {
             const expenses = await fs_extra.readJson(directory)
             return expenses.length === 0 ? 0 : expenses[expenses.length - 1].id + 1
@@ -40,7 +41,7 @@ function ipcMainHandler() {
     })
 
     ipcMain.on('new-expense', async (event, expense, year) => {
-        const file = path.join(__dirname, 'files', 'expenses', `SPESE${year}.json`)
+        const file = path.join(__dirname, '..', 'files', 'expenses', `SPESE${year}.json`)
         try {
             const expenses = await fs_extra.readJson(file)
             expenses.push(expense)
@@ -51,7 +52,7 @@ function ipcMainHandler() {
     })
 
     ipcMain.on('new-installment', async (event, installments, year) => {
-        const directory = path.join(__dirname, 'files', 'expenses', `SPESE${year}.json`)
+        const directory = path.join(__dirname, '..', 'files', 'expenses', `SPESE${year}.json`)
         try {
             const expenses = await fs_extra.readJson(directory)
             installments.forEach(installment => {
@@ -64,7 +65,7 @@ function ipcMainHandler() {
     })
 
     ipcMain.handle('get-expenses-by-year', async (event, year) => {
-        const directory = path.join(__dirname, 'files', 'expenses', `SPESE${year}.json`)
+        const directory = path.join(__dirname, '..', 'files', 'expenses', `SPESE${year}.json`)
         try {
             return await fs_extra.readJson(directory)
         } catch (error) {
@@ -72,6 +73,20 @@ function ipcMainHandler() {
         }
     })
 
+    ipcMain.on('open-category-expense-details-window', async (event, year, category) => {
+        const win = new BrowserWindow({
+            width: 800,
+            height: 600,
+            webPreferences: {
+                preload: path.join(__dirname, '..', 'src', 'category-details', 'category-details-preload.js'),
+                nodeIntegration: false,
+                contextIsolation: true,
+                enableRemoteModule: false
+            }
+        })
+        win.webContents.openDevTools()
+        await win.loadFile(path.join(__dirname, '..', 'src', 'category-details', 'category-details.html'), {search: `?year=${year}&category=${category}`})
+    })
 }
 
 module.exports = {ipcMainHandler}

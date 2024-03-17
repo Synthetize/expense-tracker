@@ -2,9 +2,10 @@ const {ipcMain, dialog} = require('electron')
 const path = require('path')
 const fs = require('fs')
 const fs_extra = require('fs-extra')
-function ipcMainConverterHandler () {
+
+function converterHandler() {
     ipcMain.handle('get-old-files-expenses', () => {
-        const directory = path.join(__dirname, 'files', 'old_files')
+        const directory = path.join(__dirname, '..', 'files', 'old_files')
         const files = fs.readdirSync(directory)
         const expenses = []
         files.forEach(file => {
@@ -16,14 +17,14 @@ function ipcMainConverterHandler () {
         return expenses.flat()
     })
 
-    ipcMain.on('create-expense-json-file', async (event,expensesList, year) => {
-        const filePath = path.join(__dirname, 'files', 'expenses', `SPESE${year}.json`)
+    ipcMain.on('create-expense-json-file', async (event, expensesList, year) => {
+        const filePath = path.join(__dirname, '..', 'files', 'expenses', `SPESE${year}.json`)
         fs_extra.writeJson(filePath, expensesList, {spaces: 2})
     })
 
     ipcMain.on('open-file-dialog-for-upload', (event) => {
         dialog.showOpenDialog({
-            defaultPath: path.join(__dirname,'files', 'old_files'),
+            defaultPath: path.join(__dirname, '..', 'files', 'old_files'),
             properties: ['openFile', 'multiSelections']
         }).then(result => {
             if (!result.canceled) {
@@ -35,4 +36,4 @@ function ipcMainConverterHandler () {
     })
 }
 
-module.exports = {ipcMainConverterHandler}
+module.exports = {ipcMainConverterHandler: converterHandler}

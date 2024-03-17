@@ -1,7 +1,8 @@
 const {app, BrowserWindow, ipcMain, Menu} = require('electron')
 const path = require('path')
-const {ipcMainHandler} = require('./ipcMainHandler')
-const {ipcMainConverterHandler} = require('./ipcMainConverterHandler')
+const {ipcMainHandler} = require('./handlers/ipcMainHandler')
+const {ipcMainConverterHandler} = require('./handlers/ConverterHandler')
+const {ipcMainCategoryDetailsHandler} = require('./handlers/CategoryDetailsHandler')
 
 const menuItems = [
     {
@@ -50,7 +51,7 @@ const createWindow = () => {
         width: 1280,
         height: 720,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname,'preload.js')
         }
     })
 
@@ -71,5 +72,7 @@ app.on('window-all-closed', () => {
 
 ipcMainHandler()
 ipcMainConverterHandler()
+ipcMainCategoryDetailsHandler()
+
 
 

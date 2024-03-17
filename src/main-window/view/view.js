@@ -37,13 +37,20 @@ applyButton.addEventListener('click', async () => {
         }
         let selectedValue = document.querySelector('#radio-form input[type="radio"]:checked').value;
         switch (selectedValue) {
-            case 'none':
+            case 'id':
+                expenses.sort((a, b) => a.id - b.id);
                 break;
-            case 'amount':
+            case 'amount-asc':
                 expenses.sort((a, b) => a.amount - b.amount);
                 break;
-            case 'date':
+            case 'amount-des':
+                expenses.sort((a, b) => b.amount - a.amount);
+                break;
+            case 'date-asc':
                 expenses.sort((a, b) => new Date(a.date) - new Date(b.date));
+                break;
+            case 'date-des':
+                expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
                 break;
             case 'type':
                 expenses.sort((a, b) => a.type.localeCompare(b.type));

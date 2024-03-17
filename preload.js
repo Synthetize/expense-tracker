@@ -17,5 +17,6 @@ contextBridge.exposeInMainWorld('electron', {
     getNextIdByYear: (year) => ipcRenderer.invoke('get-next-available-id-by-year', year),
     newExpense: (expense, year) => ipcRenderer.send('new-expense', expense, year),
     getExpensesByYear: (year) => ipcRenderer.invoke('get-expenses-by-year', year),
+    openCategoryExpenseDetailsWindow: (year, category) => ipcRenderer.send('open-category-expense-details-window', year, category),
 })
 
