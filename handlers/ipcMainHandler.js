@@ -33,34 +33,35 @@ function ipcMainHandler() {
     ipcMain.handle('get-next-available-id-by-year', async (event, year) => {
         const directory = path.join(__dirname, '..', 'files', 'expenses', `SPESE${year}.json`)
         try {
-            const expenses = await fs_extra.readJson(directory)
-            return expenses.length === 0 ? 0 : expenses[expenses.length - 1].id + 1
+            if (!await fs_extra.pathExists(directory))
+                return 0
+            else {
+                const expenses = await fs_extra.readJson(directory)
+                if (expenses.length === 0) {
+                    return 0
+                } else {
+                    return expenses[expenses.length - 1].id + 1
+                }
+            }
         } catch (error) {
             console.error(error)
         }
     })
 
-    ipcMain.on('new-expense', async (event, expense, year) => {
+    ipcMain.handle('new-expense', async (event, expense, year) => {
         const file = path.join(__dirname, '..', 'files', 'expenses', `SPESE${year}.json`)
         try {
-            const expenses = await fs_extra.readJson(file)
-            expenses.push(expense)
-            await fs_extra.writeJson(file, expenses, {spaces: 2})
+            await fs_extra.ensureFile(file);
+            let expenses;
+            try {
+                expenses = await fs_extra.readJson(file);
+            } catch (error) {
+                expenses = [];
+            }
+            expenses.push(expense);
+            await fs_extra.writeJson(file, expenses, {spaces: 2});
         } catch (error) {
-            console.error(error)
-        }
-    })
-
-    ipcMain.on('new-installment', async (event, installments, year) => {
-        const directory = path.join(__dirname, '..', 'files', 'expenses', `SPESE${year}.json`)
-        try {
-            const expenses = await fs_extra.readJson(directory)
-            installments.forEach(installment => {
-                expenses.push(installment)
-            })
-            await fs_extra.writeJson(directory, expenses, {spaces: 2})
-        } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     })
 
