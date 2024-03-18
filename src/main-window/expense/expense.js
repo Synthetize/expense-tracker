@@ -53,7 +53,7 @@ async function createExpense(year) {
             subject: document.getElementById('expense-subject').value,
             date: document.getElementById('expense-date').value,
             type: document.getElementById('expense-category').value,
-            amount: document.getElementById('expense-amount').value,
+            amount: parseInt(document.getElementById('expense-amount').value),
             description: document.getElementById('expense-description').value
         }
         validateExpense(expense);
@@ -94,7 +94,7 @@ async function createInstallment() {
                 subject: document.getElementById('expense-subject').value,
                 date: date.toISOString().split('T')[0],
                 type: document.getElementById('expense-category').value,
-                amount: document.getElementById('expense-amount').value,
+                amount: parseInt(document.getElementById('expense-amount').value),
                 description: document.getElementById('expense-description').value +
                     ` - Rata ${i + 1} di ${installment_number.value}`
             }

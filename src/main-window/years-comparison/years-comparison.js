@@ -1,21 +1,47 @@
+const table = document.getElementById('comparison-table');
+const table_head = document.getElementById('table-head');
+const table_body = document.getElementById('table-body');
+let categories = []
+let years = []
+
+Promise.all([
+    window.electron.getCategories(),
+    window.electron.getYears()])
+    .then(values => {
+        categories = values[0]
+        years = values[1]
+        years.reverse()
+        createTable()
+    })
+    .catch(error => {
+        console.error(error);
+    })
+
+
 async function createTable() {
-    // Leggi il file categories.json
-    let categories = await window.electron.getCategories();
-    console.log(categories);
-    let years = await window.electron.getYears();
 
-    let table = document.createElement('table');
+    //add total row
+    let totalRow = document.createElement('tr');
+    let cell = document.createElement('td');
+    cell.textContent = 'Totale';
+    totalRow.appendChild(cell);
 
-    let headerRow = document.createElement('tr');
+
     let th = document.createElement('th');
-    th.textContent = 'Category';
-    headerRow.appendChild(th);
+    th.textContent = 'Categorie';
+    table_head.appendChild(th);
     for (let year of years) {
         let th = document.createElement('th');
         th.textContent = year;
-        headerRow.appendChild(th);
+        table_head.appendChild(th);
+
+        //add total row cell for each year
+        let yearTotalCell = document.createElement('td');
+        let yearSum = await sumExpensesByYear(year);
+        yearTotalCell.textContent = yearSum;
+        totalRow.appendChild(yearTotalCell);
     }
-    table.appendChild(headerRow);
+    table_body.insertBefore(totalRow, table_body.firstChild);
 
     for (let category of categories) {
 
@@ -24,11 +50,11 @@ async function createTable() {
         td.textContent = category.type;
         row.appendChild(td);
 
-
+        let yearSum = 0;
         for (let year of years) {
             let td = document.createElement(`td`)
             // Aggiungi un gestore di eventi click alla cella
-            td.addEventListener('click', function() {
+            td.addEventListener('click', function () {
                 // Apri una nuova finestra o fai qualcos'altro qui
                 window.electron.openCategoryExpenseDetailsWindow(year, category.type);
             });
@@ -36,12 +62,20 @@ async function createTable() {
             td.textContent = sum;
             row.appendChild(td);
         }
-        table.appendChild(row);
+        table_body.appendChild(row);
     }
 
-    document.body.appendChild(table);
+
 }
 
+async function sumExpensesByYear(year) {
+    let expenses = await window.electron.getExpensesByYear(year);
+    let sum = 0;
+    for (let expense of expenses) {
+        sum += expense.amount;
+    }
+    return sum.toFixed(2);
+}
 
 async function sumCategoryExpensesByYear(category, year) {
     let expenses = await window.electron.getExpensesByYear(year);
@@ -51,7 +85,5 @@ async function sumCategoryExpensesByYear(category, year) {
             sum += expense.amount;
         }
     }
-    return sum;
+    return sum.toFixed(2);
 }
-
-createTable();
