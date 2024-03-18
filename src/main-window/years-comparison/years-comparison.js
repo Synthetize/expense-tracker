@@ -17,6 +17,9 @@ Promise.all([
         console.error(error);
     })
 
+function goBack() {
+    window.history.back();
+}
 
 async function createTable() {
 

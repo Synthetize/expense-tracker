@@ -24,6 +24,9 @@ window.electron.getYears().then(years => {
     applyFilter()
 });
 
+function goBack() {
+    window.history.back();
+}
 
 
 const elements = [select, toDate, fromDate, radioForm];

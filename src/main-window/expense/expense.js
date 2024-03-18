@@ -44,6 +44,10 @@ submitButton.addEventListener('click', async (event) => {
     }
 })
 
+function goBack() {
+    window.history.back();
+}
+
 async function createExpense(year) {
     confirmAlert.style.display = 'none';
     errorAlert.style.display = 'none';
