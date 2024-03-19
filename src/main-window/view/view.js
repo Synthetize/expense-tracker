@@ -73,7 +73,6 @@ function applyFilter() {
         checkboxes.forEach(checkbox => {
             selectedCategories.push(checkbox.id);
         });
-        console.log(selectedCategories);
         if (fromDate.value !== '') {
             expenses = expenses.filter(expense => new Date(expense.date) >= new Date(fromDate.value));
         }
@@ -114,8 +113,9 @@ function updateTable(expenses, selectedCategories) {
         expenses = expenses.filter(expense => selectedCategories.includes(expense.type));
     }
 
+    console.log(expenses);
     // Calcola la somma totale delle spese
-    const totalAmount = expenses.reduce((total, expense) => total + parseFloat(expense.amount), 0).toFixed(2);
+    const totalAmount = expenses.reduce((total, expense) => total + expense.amount, 0).toFixed(2);
 
     // Crea una nuova riga per la somma totale
     const totalRow = document.createElement('tr');

@@ -10,7 +10,7 @@ Promise.all([
     .then(values => {
         categories = values[0]
         years = values[1]
-        years.reverse()
+        years = years.reverse().slice(0,7)
         createTable()
     })
     .catch(error => {
@@ -53,7 +53,7 @@ async function createTable() {
         td.textContent = category.type;
         row.appendChild(td);
 
-        let yearSum = 0;
+        let rowContainsAllZeroValues = true;
         for (let year of years) {
             let td = document.createElement(`td`)
             // Aggiungi un gestore di eventi click alla cella
@@ -62,10 +62,13 @@ async function createTable() {
                 window.electron.openCategoryExpenseDetailsWindow(year, category.type);
             });
             let sum = await sumCategoryExpensesByYear(category.type, year);
+            if (sum !== '0.00') rowContainsAllZeroValues = false;
             td.textContent = sum;
             row.appendChild(td);
         }
-        table_body.appendChild(row);
+        if (!rowContainsAllZeroValues) {
+            table_body.appendChild(row);
+        }
     }
 
 

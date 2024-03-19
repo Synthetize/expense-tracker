@@ -26,6 +26,7 @@ window.electron.getSubjects().then(subjects => {
 });
 
 window.electron.getCategories().then(categories => {
+    categories.sort((a, b) => a.type.localeCompare(b.type));
     categories.forEach(category => {
         const option = document.createElement('option');
         option.value = category.type;
@@ -61,7 +62,7 @@ async function createExpense(year) {
             description: document.getElementById('expense-description').value
         }
         validateExpense(expense);
-        //await window.electron.newExpense(expense, year);
+        await window.electron.newExpense(expense, year);
         confirmAlert.style.display = 'block';
     } catch (error) {
         console.error(error);
