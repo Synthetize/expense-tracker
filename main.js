@@ -35,8 +35,9 @@ Menu.setApplicationMenu(menu)
 
 const converterWindow = () => {
     const win = new BrowserWindow({
-        width: 1280,
-        height: 720,
+        width: 270,
+        height: 150,
+        resizable: false,
         webPreferences: {
             preload: path.join(__dirname, './src/converter/converter-preload.js')
         }
@@ -55,7 +56,7 @@ const createWindow = () => {
         }
     })
 
-    win.webContents.openDevTools()
+    //win.webContents.openDevTools()
     win.loadFile('index.html')
 }
 

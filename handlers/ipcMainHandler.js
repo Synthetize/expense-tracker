@@ -76,8 +76,8 @@ function ipcMainHandler() {
 
     ipcMain.on('open-category-expense-details-window', async (event, year, category) => {
         const win = new BrowserWindow({
-            width: 800,
-            height: 600,
+            minHeight: 720,
+            minWidth: 1100,
             webPreferences: {
                 preload: path.join(__dirname, '..', 'src', 'category-details', 'category-details-preload.js'),
                 nodeIntegration: false,
@@ -85,7 +85,7 @@ function ipcMainHandler() {
                 enableRemoteModule: false
             }
         })
-        win.webContents.openDevTools()
+        //win.webContents.openDevTools()
         await win.loadFile(path.join(__dirname, '..', 'src', 'category-details', 'category-details.html'), {search: `?year=${year}&category=${category}`})
     })
 }
