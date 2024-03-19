@@ -12,7 +12,7 @@ errorAlert.style.display = 'none';
 confirmAlert.style.display = 'none';
 installment_number.disabled = true;
 
-installment_checkbox.addEventListener('change', (event) => {
+installment_checkbox.addEventListener('change', () => {
     installment_number.disabled = !installment_checkbox.checked;
 });
 

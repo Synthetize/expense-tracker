@@ -40,8 +40,7 @@ async function createTable() {
 
         //add total row cell for each year
         let yearTotalCell = document.createElement('td');
-        let yearSum = await sumExpensesByYear(year);
-        yearTotalCell.textContent = yearSum;
+        yearTotalCell.textContent = await sumExpensesByYear(year);
         totalRow.appendChild(yearTotalCell);
     }
     table_body.insertBefore(totalRow, table_body.firstChild);

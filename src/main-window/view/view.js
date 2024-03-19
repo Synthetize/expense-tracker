@@ -64,8 +64,6 @@ elements.forEach(element => {
     element.addEventListener('change', applyFilter);
 });
 
-;
-
 function applyFilter() {
     window.electron.getExpensesByYear(select.value).then(expenses => {
         const selectedCategories = [];
@@ -113,7 +111,6 @@ function applyFilter() {
 }
 
 function updateTable(expenses, selectedCategories) {
-    const table = document.getElementById('expenses-table');
     document.getElementById('table-body').innerHTML = '';
 
     // Se selectedCategories non è vuoto, filtra le spese
