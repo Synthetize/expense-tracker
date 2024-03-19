@@ -35,6 +35,13 @@ window.electron.getCategories().then(categories => {
                                         <label class="form-check-label" for="${category.type}">${category.type}</label>
                                     </div>
                                 </a>`;
+        li.addEventListener('click', event=> {
+            //prevents the dropdown from closing after clicking on a checkbox label
+            event.stopPropagation();
+            //if clicked on a checkbox label, toggle the checkbox
+            const checkbox = document.getElementById(category.type);
+            checkbox.checked = !checkbox.checked;
+        })
         dropdown.appendChild(li);
     })
 })
