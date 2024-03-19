@@ -27,7 +27,7 @@ async function convertToJSON(line) {
     const subject = line.substring(8, 12); // 4 characters for the subject
     const date = () => {
         const date = line.substring(12, 20); // 8 characters for the date
-        return `${date.substring(0, 4)}-${date.substring(4, 6)}-${date.substring(6, 8)}`;
+        return `${date.substring(6, 8)}-${date.substring(4, 6)}-${date.substring(0, 4)}`;
     }
 
     let categories = await window.electron.getCategories();

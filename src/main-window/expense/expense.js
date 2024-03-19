@@ -49,6 +49,23 @@ function goBack() {
     window.history.back();
 }
 
+function formatDate(date) {
+    return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+}
+
+function validateExpense(expense) {
+    if (expense.subject === '' || expense.date === '' || expense.type === '' || expense.amount === '') {
+        throw new Error('Campi obbligatori non compilati');
+    } else if (isNaN(expense.amount)) {
+        throw new Error('L\'importo deve essere un numero');
+    }
+    if (!installment_number.disabled) {
+        if (installment_number.value === '' || isNaN(installment_number.value) || installment_number.value < 2) {
+            throw new Error('Numero di rate non valido');
+        }
+    }
+}
+
 async function createExpense(year) {
     confirmAlert.style.display = 'none';
     errorAlert.style.display = 'none';
@@ -56,7 +73,7 @@ async function createExpense(year) {
         const expense = {
             id: await window.electron.getNextAvailableIdByYear(year),
             subject: document.getElementById('expense-subject').value,
-            date: document.getElementById('expense-date').value,
+            date: formatDate(new Date(document.getElementById('expense-date').value)),
             type: document.getElementById('expense-category').value,
             amount: parseInt(document.getElementById('expense-amount').value),
             description: document.getElementById('expense-description').value
@@ -76,28 +93,18 @@ async function createExpense(year) {
     }
 }
 
-function validateExpense(expense) {
-    if (expense.subject === '' || expense.date === '' || expense.type === '' || expense.amount === '') {
-        throw new Error('Campi obbligatori non compilati');
-    } else if (isNaN(expense.amount)) {
-        throw new Error('L\'importo deve essere un numero');
-    }
-    if (!installment_number.disabled) {
-        if (installment_number.value === '' || isNaN(installment_number.value) || installment_number.value < 2) {
-            throw new Error('Numero di rate non valido');
-        }
-    }
-}
+
 
 
 async function createInstallment() {
     try {
         let date = new Date(document.getElementById('expense-date').value);
+
         for (let i = 0; i < installment_number.value; i++) {
             const installment = {
                 id: await window.electron.getNextAvailableIdByYear(date.getFullYear()),
                 subject: document.getElementById('expense-subject').value,
-                date: date.toISOString().split('T')[0],
+                date: formatDate(date),
                 type: document.getElementById('expense-category').value,
                 amount: parseInt(document.getElementById('expense-amount').value),
                 description: document.getElementById('expense-description').value +

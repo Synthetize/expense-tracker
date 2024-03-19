@@ -35,7 +35,7 @@ window.electron.getCategories().then(categories => {
                                         <label class="form-check-label" for="${category.type}">${category.type}</label>
                                     </div>
                                 </a>`;
-        li.addEventListener('click', event=> {
+        li.addEventListener('click', event => {
             //prevents the dropdown from closing after clicking on a checkbox label
             event.stopPropagation();
             //if clicked on a checkbox label, toggle the checkbox
@@ -88,10 +88,18 @@ function applyFilter() {
                 expenses.sort((a, b) => a.amount - b.amount);
                 break;
             case 'amount-des':
-                expenses.sort((a, b) => b.amount - a.amount);
+                expenses.sort((a, b) => {
+                    let dateA = a.date.split("-").reverse().join("-");
+                    let dateB = b.date.split("-").reverse().join("-");
+                    return new Date(dateB) - new Date(dateA);
+                });
                 break;
             case 'date-asc':
-                expenses.sort((a, b) => new Date(a.date) - new Date(b.date));
+                expenses.sort((a, b) => {
+                    let dateA = a.date.split("-").reverse().join("-");
+                    let dateB = b.date.split("-").reverse().join("-");
+                    return new Date(dateA) - new Date(dateB);
+                });
                 break;
             case 'date-des':
                 expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
