@@ -4,17 +4,47 @@
     <meta charset="UTF-8">
     <title>Consultazione analitica</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .dropdown-menu {
+            width: 96%;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
 </head>
 <body>
 <div class="container col-md-8 mx-auto">
     <h1 class="text-center my-4">Consultazione analitica</h1>
     <button class="btn btn-primary" id="compare-button" onclick="goBack()">Back</button>
 
-    <div class="row g-3" novalidate>
+    <div class="row g-3 align-items-center" novalidate>
         <div class="form-group col-md-6">
             <label for="year-options"><strong>Anno:</strong></label>
             <select id="year-options" class="form-control"></select>
         </div>
+        <div class="dropdown col-md-6">
+            <label for="dropdownMenuButton"><strong>Categorie:</strong></label>
+            <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                Seleziona categorie da visualizzare
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdown-menu">
+                <li>
+                    <a class="dropdown-item" onclick="removeSelectedCheckboxes()">Rimuovi selezionati</a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+<!--                                <li><a class="dropdown-item" href="#">-->
+<!--                                    <div class="form-check">-->
+<!--                                        <input class="form-check-input" type="checkbox" value="" id="Checkme1"/>-->
+<!--                                        <label class="form-check-label" for="Checkme1">Check mttttttttttttttttttttttttttttttttttttttttttttttttttttttttte</label>-->
+<!--                                    </div>-->
+<!--                                </a></li>-->
+            </ul>
+        </div>
+
         <div class="form-group col-md-6">
             <label for="from-date"><strong>Data inizio:</strong></label>
             <input type="date" id="from-date" class="form-control">
@@ -50,7 +80,6 @@
                 <label for="type" class="form-check-label">Tipo</label>
             </div>
         </div>
-
     </div>
     <table id="expenses-table" class="table">
         <thead>

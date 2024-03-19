@@ -5,6 +5,7 @@ const toDate = document.getElementById('to-date');
 const applyButton = document.getElementById('apply-filter');
 const radioForm = document.getElementById('radio-form');
 const amountField = document.getElementById('total-amount');
+const dropdown = document.getElementById('dropdown-menu');
 
 document.addEventListener('DOMContentLoaded', () => {
     const firstRadioButton = document.querySelector('#radio-form input[type="radio"]:first-child');
@@ -24,18 +25,48 @@ window.electron.getYears().then(years => {
     applyFilter()
 });
 
+window.electron.getCategories().then(categories => {
+    categories.forEach(category => {
+        const li = document.createElement('li');
+        li.className = 'dropdown-item';
+        li.innerHTML = `<a class="dropdown-item" href="#">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="${category.type}"/>
+                                        <label class="form-check-label" for="${category.type}">${category.type}</label>
+                                    </div>
+                                </a>`;
+        dropdown.appendChild(li);
+    })
+})
+
+function removeSelectedCheckboxes() {
+    const checkboxes = document.querySelectorAll('.dropdown-item input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    applyFilter()
+}
+
 function goBack() {
     window.history.back();
 }
 
 
-const elements = [select, toDate, fromDate, radioForm];
+const elements = [select, toDate, fromDate, radioForm, dropdown];
 elements.forEach(element => {
     element.addEventListener('change', applyFilter);
 });
 
+;
+
 function applyFilter() {
     window.electron.getExpensesByYear(select.value).then(expenses => {
+        const selectedCategories = [];
+        const checkboxes = document.querySelectorAll('.dropdown-item input[type="checkbox"]:checked');
+        checkboxes.forEach(checkbox => {
+            selectedCategories.push(checkbox.id);
+        });
+        console.log(selectedCategories);
         if (fromDate.value !== '') {
             expenses = expenses.filter(expense => new Date(expense.date) >= new Date(fromDate.value));
         }
@@ -63,13 +94,19 @@ function applyFilter() {
                 expenses.sort((a, b) => a.type.localeCompare(b.type));
                 break;
         }
-        updateTable(expenses);
+        updateTable(expenses, selectedCategories);
     })
 }
 
-function updateTable(expenses) {
+function updateTable(expenses, selectedCategories) {
     const table = document.getElementById('expenses-table');
     document.getElementById('table-body').innerHTML = '';
+
+    // Se selectedCategories non è vuoto, filtra le spese
+    if (selectedCategories.length > 0) {
+        expenses = expenses.filter(expense => selectedCategories.includes(expense.type));
+    }
+
     // Calcola la somma totale delle spese
     const totalAmount = expenses.reduce((total, expense) => total + parseFloat(expense.amount), 0).toFixed(2);
 
@@ -82,6 +119,8 @@ function updateTable(expenses) {
 
     // Aggiungi la riga della somma totale in cima alla tabella
     document.getElementById('table-body').appendChild(totalRow);
+
+    //aggiungi le spese nella tabella
     expenses.forEach(expense => {
         const row = document.createElement('tr');
         Object.keys(expense).forEach(key => {
