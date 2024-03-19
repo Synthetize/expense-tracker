@@ -9,28 +9,36 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 </head>
 <body>
-<div class="container col-md-8 mx-auto">
-    <h1 class="text-center my-4">Aggiungi spesa</h1>
-    <button class="btn btn-primary" id="compare-button" onclick="goBack()">Back</button>
+<div class="container col-md-8">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-1">
+            <button class="btn btn-primary " id="compare-button" onclick="goBack()">Back</button>
+        </div>
+        <div class="col-md-11">
+            <h1 class="text-center my-4 " style="margin-right: 10%">Aggiungi Spesa</h1>
+        </div>
+    </div>
+
+
     <form class="row g-3 needs-validation" novalidate>
         <div class="col-md-6">
-            <label for="expense-subject" class="form-label">Soggetto</label>
+            <label for="expense-subject" class="form-label"><strong>Soggetto</strong></label>
             <select id="expense-subject" class="form-select" required></select>
         </div>
         <div class="col-md-6">
-            <label for="expense-amount" class="form-label">Importo spesa/rata</label>
+            <label for="expense-amount" class="form-label"><strong>Importo spesa/rata</strong></label>
             <input type="number" id="expense-amount" class="form-control" required>
         </div>
         <div class="col-md-12">
-            <label for="expense-description" class="form-label">Descrizione</label>
+            <label for="expense-description" class="form-label"><strong>Descrizione</strong></label>
             <textarea id="expense-description" class="form-control"></textarea>
         </div>
         <div class="col-md-6">
-            <label for="expense-date" class="form-label">Data</label>
+            <label for="expense-date" class="form-label"><strong>Data</strong></label>
             <input type="date" id="expense-date" class="form-control" required>
         </div>
         <div class="col-md-6">
-            <label for="expense-category" class="form-label">Categoria</label>
+            <label for="expense-category" class="form-label"><strong>Categoria</strong></label>
             <select id="expense-category" class="form-select" aria-label="Large select example" required></select>
         </div>
         <div class="col-md-11 form-check ms-2">
@@ -44,10 +52,10 @@
             <button class="btn btn-primary" type="submit" id="submit">Aggiungi</button>
         </div>
     </form>
-    <div class="alert alert-primary" role="alert" id="confirm-alert">
+    <div class="alert alert-primary" role="alert" id="confirm-alert" style="margin-top: 2%">
         </a>Spesa aggiunta con successo!
     </div>
-    <div class="alert alert-danger" role="alert" id="error-alert"></div>
+    <div class="alert alert-danger" role="alert" id="error-alert" style="margin-top: 2%"></div>
 </div>
 <script src="expense.js"></script>
 </body>
