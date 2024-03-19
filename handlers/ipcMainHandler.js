@@ -1,11 +1,19 @@
-const {ipcMain, BrowserWindow} = require('electron')
+const {ipcMain, BrowserWindow, app} = require('electron')
 const path = require('path')
 const fs = require('fs')
 const fs_extra = require('fs-extra')
 
+let filesPath
+if(app.isPackaged) {
+    filesPath = path.join(process.resourcesPath, 'files')
+} else {
+    filesPath = path.join(__dirname, '..', 'files')
+
+}
+
 function ipcMainHandler() {
     ipcMain.handle('get-years', async () => {
-        const directory = path.join(__dirname, '..', 'files', 'expenses')
+        const directory = path.join(filesPath, 'expenses')
         const years = []
         fs.readdirSync(directory).forEach(file => {
             let year = file.match(/\d+/)[0]
@@ -16,7 +24,7 @@ function ipcMainHandler() {
 
     ipcMain.handle('get-subjects', async () => {
         try {
-            return await fs_extra.readJson(path.join(__dirname, '..', 'files', 'subjects.json'))
+            return await fs_extra.readJson(path.join(filesPath, 'subjects.json'))
         } catch (error) {
             console.error(error)
         }
@@ -24,14 +32,14 @@ function ipcMainHandler() {
 
     ipcMain.handle('get-categories', async () => {
         try {
-            return await fs_extra.readJson(path.join(__dirname, '..', 'files', 'categories.json'))
+            return await fs_extra.readJson(path.join(filesPath, 'categories.json'))
         } catch (error) {
             console.error(error)
         }
     })
 
     ipcMain.handle('get-next-available-id-by-year', async (event, year) => {
-        const directory = path.join(__dirname, '..', 'files', 'expenses', `SPESE${year}.json`)
+        const directory = path.join(filesPath, 'expenses', `SPESE${year}.json`)
         try {
             if (!await fs_extra.pathExists(directory))
                 return 0
@@ -49,7 +57,7 @@ function ipcMainHandler() {
     })
 
     ipcMain.handle('new-expense', async (event, expense, year) => {
-        const file = path.join(__dirname, '..', 'files', 'expenses', `SPESE${year}.json`)
+        const file = path.join(filesPath, 'expenses', `SPESE${year}.json`)
         try {
             await fs_extra.ensureFile(file);
             let expenses;
@@ -66,7 +74,7 @@ function ipcMainHandler() {
     })
 
     ipcMain.handle('get-expenses-by-year', async (event, year) => {
-        const directory = path.join(__dirname, '..', 'files', 'expenses', `SPESE${year}.json`)
+        const directory = path.join(filesPath, 'expenses', `SPESE${year}.json`)
         try {
             return await fs_extra.readJson(directory)
         } catch (error) {
