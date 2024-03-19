@@ -41,7 +41,7 @@ const converterWindow = () => {
             preload: path.join(__dirname, './src/converter/converter-preload.js')
         }
     })
-    win.webContents.openDevTools()
+    //win.webContents.openDevTools()
     win.loadFile('./src/converter/converter.html')
 }
 
@@ -55,7 +55,7 @@ const createWindow = () => {
         }
     })
 
-    win.webContents.openDevTools()
+    //win.webContents.openDevTools()
     win.loadFile('index.html')
 }
 
