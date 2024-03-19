@@ -27,7 +27,7 @@ function converterHandler() {
 
     ipcMain.on('create-expense-json-file', async (event, expensesList, year) => {
         const filePath = path.join(filesPath, 'expenses', `SPESE${year}.json`)
-        fs_extra.writeJson(filePath, expensesList, {spaces: 2})
+        await fs_extra.writeJson(filePath, expensesList, {spaces: 2})
     })
 
     ipcMain.on('open-file-dialog-for-upload', (event) => {

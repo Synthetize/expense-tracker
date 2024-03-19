@@ -4,7 +4,7 @@ const fs = require('fs')
 const fs_extra = require('fs-extra')
 
 let filesPath
-if(app.isPackaged) {
+if (app.isPackaged) {
     filesPath = path.join(process.resourcesPath, 'files')
 } else {
     filesPath = path.join(__dirname, '..', 'files')
@@ -95,6 +95,22 @@ function ipcMainHandler() {
         })
         //win.webContents.openDevTools()
         await win.loadFile(path.join(__dirname, '..', 'src', 'category-details', 'category-details.html'), {search: `?year=${year}&category=${category}`})
+    })
+
+    ipcMain.handle('add-new-category', async (event, category_name) => {
+        let categories = await fs_extra.readJson(path.join(filesPath, 'categories.json'))
+        if(category_name === '')
+            return {success: false, message: 'Invalid category.'}
+        for (let category of categories) {
+            if (category.type === category_name) {
+                return {success: false, message: 'Category already exists.'}
+            }
+        }
+        let id = categories[categories.length - 1].id + 1
+        categories.push({id: id, type: category_name})
+        await fs_extra.writeJson(path.join(filesPath, 'categories.json'), categories, {spaces: 2})
+        return {success: true, message: 'Category added successfully.'}
+
     })
 }
 

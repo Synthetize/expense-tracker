@@ -18,5 +18,6 @@ contextBridge.exposeInMainWorld('electron', {
     newExpense: (expense, year) => ipcRenderer.invoke('new-expense', expense, year),
     getExpensesByYear: (year) => ipcRenderer.invoke('get-expenses-by-year', year),
     openCategoryExpenseDetailsWindow: (year, category) => ipcRenderer.send('open-category-expense-details-window', year, category),
+    addNewCategory: (categoryName) => ipcRenderer.invoke('add-new-category', categoryName),
 })
 
