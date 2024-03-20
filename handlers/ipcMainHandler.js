@@ -111,8 +111,24 @@ function ipcMainHandler() {
                 enableRemoteModule: false
             }
         })
-        win.webContents.openDevTools()
+        //win.webContents.openDevTools()
         await win.loadFile(path.join(__dirname, '..', 'src', 'category-details', 'category-details.html'), {search: `?year=${year}&category=${category}`})
+    })
+
+    ipcMain.on('open-edit-categories-window', async (event) => {
+        const win = new BrowserWindow({
+            height: 500,
+            width: 600,
+            resizable: false,
+            webPreferences: {
+                preload: path.join(__dirname, '..', 'src', 'edit-categories', 'editCategories-preload.js'),
+                nodeIntegration: false,
+                contextIsolation: true,
+                enableRemoteModule: false
+            }
+        })
+        //win.webContents.openDevTools()
+        await win.loadFile(path.join(__dirname, '..', 'src', 'edit-categories', 'editCategories.html'))
     })
 
     ipcMain.handle('add-new-category', async (event, category_name) => {

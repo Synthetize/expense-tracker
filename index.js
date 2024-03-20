@@ -22,5 +22,9 @@ function addCategory(event) {
             error_alert.style.display = 'none';
         }, 3000)
     })
+}
 
+
+function openEditCategoriesWindows() {
+    window.electron.openEditCategoryWindow();
 }

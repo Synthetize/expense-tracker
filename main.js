@@ -3,6 +3,7 @@ const path = require('path')
 const {ipcMainHandler} = require('./handlers/ipcMainHandler')
 const {ipcMainConverterHandler} = require('./handlers/ConverterHandler')
 const {ipcMainCategoryDetailsHandler} = require('./handlers/CategoryDetailsHandler')
+const {ipcMainEditCategoryHandler} = require("./handlers/editCategoryHandler");
 
 const menuItems = [
     {
@@ -74,6 +75,7 @@ app.on('window-all-closed', () => {
 ipcMainHandler()
 ipcMainConverterHandler()
 ipcMainCategoryDetailsHandler()
+ipcMainEditCategoryHandler()
 
 
 

@@ -1,7 +1,7 @@
 [
   {
-    "id": 1,
-    "type": "ABBIGLIAMENTO333333333333"
+    "id": "1",
+    "type": "ABBIGLIAMENTO"
   },
   {
     "id": 2,
@@ -64,7 +64,7 @@
     "type": "BOLLETTA ENERGIA ELETTRICA"
   },
   {
-    "id": 17,
+    "id": "17",
     "type": "."
   },
   {
@@ -180,7 +180,7 @@
     "type": "MANSARDA"
   },
   {
-    "id": 46,
+    "id": "46",
     "type": "RATA VIDEOCAMERA"
   },
   {
