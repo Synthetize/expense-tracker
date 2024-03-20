@@ -75,7 +75,7 @@ async function createExpense(year) {
             subject: document.getElementById('expense-subject').value,
             date: formatDate(new Date(document.getElementById('expense-date').value)),
             type: document.getElementById('expense-category').value,
-            amount: parseInt(document.getElementById('expense-amount').value),
+            amount: parseFloat(document.getElementById('expense-amount').value),
             description: document.getElementById('expense-description').value
         }
         validateExpense(expense);

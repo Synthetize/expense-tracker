@@ -72,10 +72,17 @@ function applyFilter() {
             selectedCategories.push(checkbox.id);
         });
         if (fromDate.value !== '') {
-            expenses = expenses.filter(expense => new Date(expense.date) >= new Date(fromDate.value));
+            expenses = expenses.filter(expense => {
+                let expensedate = expense.date.split('-').reverse().join('-');
+                return new Date(expensedate) >= new Date(fromDate.value);
+            });
         }
         if (toDate.value !== '') {
-            expenses = expenses.filter(expense => new Date(expense.date) <= new Date(toDate.value));
+            expenses = expenses.filter(expense => {
+                let expensedate = expense.date.split('-').reverse().join('-');
+                return new Date(expensedate) <= new Date(toDate.value)
+            });
+
         }
         let selectedValue = document.querySelector('#radio-form input[type="radio"]:checked').value;
         switch (selectedValue) {
@@ -86,21 +93,22 @@ function applyFilter() {
                 expenses.sort((a, b) => a.amount - b.amount);
                 break;
             case 'amount-des':
-                expenses.sort((a, b) => {
-                    let dateA = a.date.split("-").reverse().join("-");
-                    let dateB = b.date.split("-").reverse().join("-");
-                    return new Date(dateB) - new Date(dateA);
-                });
+                expenses.sort((a, b) => b.amount - a.amount);
                 break;
             case 'date-asc':
                 expenses.sort((a, b) => {
-                    let dateA = a.date.split("-").reverse().join("-");
-                    let dateB = b.date.split("-").reverse().join("-");
+                    let dateA = a.date.split('-').reverse().join('-');
+                    let dateB = b.date.split('-').reverse().join('-');
                     return new Date(dateA) - new Date(dateB);
                 });
                 break;
             case 'date-des':
-                expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+                expenses.sort((a, b) => {
+                    console.log(a.date, b.date);
+                    let dateA = a.date.split('-').reverse().join('-');
+                    let dateB = b.date.split('-').reverse().join('-');
+                    return new Date(dateB) - new Date(dateA);
+                });
                 break;
             case 'type':
                 expenses.sort((a, b) => a.type.localeCompare(b.type));
