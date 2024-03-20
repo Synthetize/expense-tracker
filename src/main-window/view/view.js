@@ -6,11 +6,13 @@ const applyButton = document.getElementById('apply-filter');
 const radioForm = document.getElementById('radio-form');
 const amountField = document.getElementById('total-amount');
 const dropdown = document.getElementById('dropdown-menu');
+let expensesList = []
 
 document.addEventListener('DOMContentLoaded', () => {
     const firstRadioButton = document.querySelector('#radio-form input[type="radio"]:first-child');
     firstRadioButton.checked = true;
     radioForm.value = firstRadioButton.value;
+
 })
 
 window.electron.getYears().then(years => {
@@ -22,10 +24,21 @@ window.electron.getYears().then(years => {
     });
     select.selectedIndex = select.options.length - 1;
     select.value = select.options[select.selectedIndex].value;
-    applyFilter()
+    getYearExpenses(select.value).then(r => {
+        applyFilter()
+    })
 });
 
+async function getYearExpenses(year) {
+    expensesList = await window.electron.getExpensesByYear(year)
+    for (let i = 0; i < expensesList.length; i++) {
+        expensesList[i].category = await window.electron.getCategoryById(expensesList[i].category)
+    }
+}
+
+
 window.electron.getCategories().then(categories => {
+    categories.sort((a, b) => a.type.localeCompare(b.type));
     categories.forEach(category => {
         const li = document.createElement('li');
         li.className = 'dropdown-item';
@@ -46,7 +59,7 @@ window.electron.getCategories().then(categories => {
     })
 })
 
-function removeSelectedCheckboxes() {
+function resetSelectedCheckBoxes() {
     const checkboxes = document.querySelectorAll('.dropdown-item input[type="checkbox"]');
     checkboxes.forEach(checkbox => {
         checkbox.checked = false;
@@ -64,69 +77,89 @@ elements.forEach(element => {
     element.addEventListener('change', applyFilter);
 });
 
-function applyFilter() {
-    window.electron.getExpensesByYear(select.value).then(expenses => {
-        const selectedCategories = [];
-        const checkboxes = document.querySelectorAll('.dropdown-item input[type="checkbox"]:checked');
-        checkboxes.forEach(checkbox => {
-            selectedCategories.push(checkbox.id);
-        });
-        if (fromDate.value !== '') {
-            expenses = expenses.filter(expense => {
-                let expensedate = expense.date.split('-').reverse().join('-');
-                return new Date(expensedate) >= new Date(fromDate.value);
-            });
-        }
-        if (toDate.value !== '') {
-            expenses = expenses.filter(expense => {
-                let expensedate = expense.date.split('-').reverse().join('-');
-                return new Date(expensedate) <= new Date(toDate.value)
-            });
 
-        }
-        let selectedValue = document.querySelector('#radio-form input[type="radio"]:checked').value;
-        switch (selectedValue) {
-            case 'id':
-                expenses.sort((a, b) => a.id - b.id);
-                break;
-            case 'amount-asc':
-                expenses.sort((a, b) => a.amount - b.amount);
-                break;
-            case 'amount-des':
-                expenses.sort((a, b) => b.amount - a.amount);
-                break;
-            case 'date-asc':
-                expenses.sort((a, b) => {
-                    let dateA = a.date.split('-').reverse().join('-');
-                    let dateB = b.date.split('-').reverse().join('-');
-                    return new Date(dateA) - new Date(dateB);
-                });
-                break;
-            case 'date-des':
-                expenses.sort((a, b) => {
-                    console.log(a.date, b.date);
-                    let dateA = a.date.split('-').reverse().join('-');
-                    let dateB = b.date.split('-').reverse().join('-');
-                    return new Date(dateB) - new Date(dateA);
-                });
-                break;
-            case 'type':
-                expenses.sort((a, b) => a.type.localeCompare(b.type));
-                break;
-        }
-        updateTable(expenses, selectedCategories);
-    })
+function applyFilter() {
+    let filteredExpenses = [...expensesList];
+    const selectedCategories = getSelectedCategories()
+    filteredExpenses = filterBySelectedCategories(filteredExpenses, selectedCategories);
+    filteredExpenses = filterByDate(filteredExpenses);
+    sortBy(filteredExpenses);
+    updateTable(filteredExpenses);
 }
 
-function updateTable(expenses, selectedCategories) {
+
+
+
+function getSelectedCategories() {
+    let tempSelectedCategories = [];
+    const checkboxes = document.querySelectorAll('.dropdown-item input[type="checkbox"]:checked');
+    checkboxes.forEach(checkbox => {
+        tempSelectedCategories.push(checkbox.id);
+    })
+    return tempSelectedCategories;
+}
+
+function filterBySelectedCategories(expenses, selectedCategories) {
+    if (selectedCategories.length > 0) {
+        expenses = expenses.filter(expense => selectedCategories.includes(expense.category));
+        console.log(expenses)
+    }
+    return expenses;
+}
+
+function filterByDate(expenses) {
+    if (fromDate.value !== '') {
+        expenses = expenses.filter(expense => {
+            let expenseDate = expense.date.split('-').reverse().join('-');
+            return new Date(expenseDate) >= new Date(fromDate.value);
+        });
+    }
+    if (toDate.value !== '') {
+        expenses = expenses.filter(expense => {
+            let expenseDate = expense.date.split('-').reverse().join('-');
+            return new Date(expenseDate) <= new Date(toDate.value)
+        });
+    }
+    return expenses;
+}
+
+function sortBy(expenses) {
+    let selectedValue = document.querySelector('#radio-form input[type="radio"]:checked').value;
+    switch (selectedValue) {
+        case 'id':
+            expenses.sort((a, b) => a.id - b.id);
+            break;
+        case 'amount-asc':
+            expenses.sort((a, b) => a.amount - b.amount);
+            break;
+        case 'amount-des':
+            expenses.sort((a, b) => b.amount - a.amount);
+            break;
+        case 'date-asc':
+            expenses.sort((a, b) => {
+                let dateA = a.date.split('-').reverse().join('-');
+                let dateB = b.date.split('-').reverse().join('-');
+                return new Date(dateA) - new Date(dateB);
+            });
+            break;
+        case 'date-des':
+            expenses.sort((a, b) => {
+                let dateA = a.date.split('-').reverse().join('-');
+                let dateB = b.date.split('-').reverse().join('-');
+                return new Date(dateB) - new Date(dateA);
+            });
+            break;
+        case 'category':
+            expenses.sort((a, b) => a.category.localeCompare(b.category));
+            break;
+    }
+}
+
+
+
+function updateTable(expenses) {
     document.getElementById('table-body').innerHTML = '';
 
-    // Se selectedCategories non è vuoto, filtra le spese
-    if (selectedCategories.length > 0) {
-        expenses = expenses.filter(expense => selectedCategories.includes(expense.type));
-    }
-
-    console.log(expenses);
     // Calcola la somma totale delle spese
     const totalAmount = expenses.reduce((total, expense) => total + expense.amount, 0).toFixed(2);
 

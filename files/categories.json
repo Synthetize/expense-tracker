@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "type": "ABBIGLIAMENTO"
+    "type": "ABBIGLIAMENTO333333333333"
   },
   {
     "id": 2,
@@ -224,11 +224,11 @@
     "type": "ESTETISTA"
   },
   {
-    "id": 100,
+    "id": 57,
     "type": "VARIE"
   },
   {
-    "id": 990,
+    "id": 58,
     "type": "ENTRATE (segno -)"
   }
 ]

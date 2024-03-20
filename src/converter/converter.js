@@ -30,18 +30,15 @@ async function convertToJSON(line) {
         return `${date.substring(6, 8)}-${date.substring(4, 6)}-${date.substring(0, 4)}`;
     }
 
-    let categories = await window.electron.getCategories();
-
     function type() {
         const typeId = parseInt(line.substring(20, 24)); // 4 characters for the type
-        let found = false;
-        for (let i = 0; i < categories.length; i++) {
-            if (categories[i].id === typeId && !found) {
-                found = true;
-                return categories[i].type;
-            }
+        if (typeId === 100) {
+            return 57;
+        } else if (typeId === 990) {
+            return 58;
+        } else {
+            return typeId;
         }
-        return 'UNKNOWN';
     }
 
     const amount = () => {
@@ -58,7 +55,7 @@ async function convertToJSON(line) {
         id: id,
         subject: 'Piero e Rosita',
         date: date(),
-        type: type(),
+        category: type(),
         amount: amount(),
         description: line.substring(36, 435).trim() // 400 characters for the description
     }

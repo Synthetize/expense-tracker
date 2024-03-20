@@ -58,9 +58,9 @@ async function createTable() {
             // Aggiungi un gestore di eventi click alla cella
             td.addEventListener('click', function () {
                 // Apri una nuova finestra o fai qualcos'altro qui
-                window.electron.openCategoryExpenseDetailsWindow(year, category.type);
+                window.electron.openCategoryExpenseDetailsWindow(year, category.id);
             });
-            let sum = await sumCategoryExpensesByYear(category.type, year);
+            let sum = await sumCategoryExpensesByYear(category.id, year);
             if (sum !== '0.00') rowContainsAllZeroValues = false;
             td.textContent = sum;
             row.appendChild(td);
@@ -82,11 +82,11 @@ async function sumExpensesByYear(year) {
     return sum.toFixed(2);
 }
 
-async function sumCategoryExpensesByYear(category, year) {
+async function sumCategoryExpensesByYear(categoryId, year) {
     let expenses = await window.electron.getExpensesByYear(year);
     let sum = 0;
     for (let expense of expenses) {
-        if (expense.type === category) {
+        if (expense.category === categoryId) {
             sum += expense.amount;
         }
     }

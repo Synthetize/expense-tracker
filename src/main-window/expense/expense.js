@@ -38,10 +38,21 @@ window.electron.getCategories().then(categories => {
 submitButton.addEventListener('click', async (event) => {
     event.preventDefault();
     const year = new Date(document.getElementById('expense-date').value).getFullYear();
-    if (installment_checkbox.checked) {
-        await createInstallment(year);
-    } else {
-        await createExpense(year);
+    try {
+        if (installment_checkbox.checked) {
+            await createInstallment(year);
+        } else {
+            await createExpense(year);
+        }
+    } catch (error) {
+        console.error(error);
+        errorAlert.style.display = 'block';
+        errorAlert.innerText = error.message;
+    } finally {
+        setTimeout(() => {
+            errorAlert.style.display = 'none';
+            confirmAlert.style.display = 'none';
+        }, 3000);
     }
 })
 
@@ -66,65 +77,43 @@ function validateExpense(expense) {
     }
 }
 
+async function findCategoryId(type) {
+    let category = document.getElementById('expense-category').value;
+    return await window.electron.getCategoryIdByType(category)
+}
+
 async function createExpense(year) {
-    confirmAlert.style.display = 'none';
-    errorAlert.style.display = 'none';
-    try {
-        const expense = {
-            id: await window.electron.getNextAvailableIdByYear(year),
-            subject: document.getElementById('expense-subject').value,
-            date: formatDate(new Date(document.getElementById('expense-date').value)),
-            type: document.getElementById('expense-category').value,
-            amount: parseFloat(document.getElementById('expense-amount').value),
-            description: document.getElementById('expense-description').value
-        }
-        validateExpense(expense);
-        await window.electron.newExpense(expense, year);
-        confirmAlert.style.display = 'block';
-    } catch (error) {
-        console.error(error);
-        errorAlert.style.display = 'block';
-        errorAlert.innerText = error.message;
-    } finally {
-        setTimeout(() => {
-            errorAlert.style.display = 'none';
-            confirmAlert.style.display = 'none';
-        }, 3000);
+    const expense = {
+        id: await window.electron.getNextAvailableIdByYear(year),
+        subject: document.getElementById('expense-subject').value,
+        date: formatDate(new Date(document.getElementById('expense-date').value)),
+        category: await findCategoryId(document.getElementById('expense-category').value),
+        amount: parseFloat(document.getElementById('expense-amount').value),
+        description: document.getElementById('expense-description').value
     }
+    validateExpense(expense);
+    await window.electron.newExpense(expense, year);
+    confirmAlert.style.display = 'block';
 }
 
 
-
-
 async function createInstallment() {
-    try {
-        let date = new Date(document.getElementById('expense-date').value);
-
-        for (let i = 0; i < installment_number.value; i++) {
-            const installment = {
-                id: await window.electron.getNextAvailableIdByYear(date.getFullYear()),
-                subject: document.getElementById('expense-subject').value,
-                date: formatDate(date),
-                type: document.getElementById('expense-category').value,
-                amount: parseInt(document.getElementById('expense-amount').value),
-                description: document.getElementById('expense-description').value +
-                    ` - Rata ${i + 1} di ${installment_number.value}`
-            }
-            console.log(installment);
-            validateExpense(installment)
-            await window.electron.newExpense(installment, date.getFullYear());
-            date.setMonth(date.getMonth() + 1);
+    let date = new Date(document.getElementById('expense-date').value);
+    for (let i = 0; i < installment_number.value; i++) {
+        const installment = {
+            id: await window.electron.getNextAvailableIdByYear(date.getFullYear()),
+            subject: document.getElementById('expense-subject').value,
+            date: formatDate(date),
+            category: await findCategoryId(document.getElementById('expense-category').value),
+            amount: parseInt(document.getElementById('expense-amount').value),
+            description: document.getElementById('expense-description').value +
+                ` - Rata ${i + 1} di ${installment_number.value}`
         }
-        confirmAlert.style.display = 'block';
-    } catch (error) {
-        console.error(error);
-        errorAlert.style.display = 'block';
-        errorAlert.innerText = error.message;
-    } finally {
-        setTimeout(() => {
-            errorAlert.style.display = 'none';
-            confirmAlert.style.display = 'none';
-        }, 3000);
+        console.log(installment);
+        validateExpense(installment)
+        await window.electron.newExpense(installment, date.getFullYear());
+        date.setMonth(date.getMonth() + 1);
     }
+    confirmAlert.style.display = 'block';
 }
 

@@ -12,11 +12,11 @@ if(app.isPackaged) {
 }
 
 function categoryDetailsHandler() {
-    ipcMain.handle('get-category-details-by-year', (event, year, category) => {
-        console.log(year, category)
+    ipcMain.handle('get-category-details-by-year', (event, year, categoryId) => {
+
         const file = path.join(filesPath, 'expenses', `SPESE${year}.json`)
         return fs_extra.readJson(file).then(expenses => {
-            return expenses.filter(expense => expense.type === category)
+            return expenses.filter(expense => expense.category === parseInt(categoryId))
         }).catch(error => {
             console.error(error)
         })

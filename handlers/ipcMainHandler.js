@@ -82,6 +82,24 @@ function ipcMainHandler() {
         }
     })
 
+    ipcMain.handle('get-category-by-id', async (event, id) => {
+        const categories = await fs_extra.readJson(path.join(filesPath, 'categories.json'))
+        for (let category of categories) {
+            if (category.id === id) {
+                return category.type
+            }
+        }
+    })
+
+    ipcMain.handle('get-category-id-by-type', async (event, type) => {
+        const categories = await fs_extra.readJson(path.join(filesPath, 'categories.json'))
+        for (let category of categories) {
+            if (category.type === type) {
+                return category.id
+            }
+        }
+    })
+
     ipcMain.on('open-category-expense-details-window', async (event, year, category) => {
         const win = new BrowserWindow({
             minHeight: 720,
@@ -93,7 +111,7 @@ function ipcMainHandler() {
                 enableRemoteModule: false
             }
         })
-        //win.webContents.openDevTools()
+        win.webContents.openDevTools()
         await win.loadFile(path.join(__dirname, '..', 'src', 'category-details', 'category-details.html'), {search: `?year=${year}&category=${category}`})
     })
 
