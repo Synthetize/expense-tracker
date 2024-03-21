@@ -22,5 +22,6 @@ contextBridge.exposeInMainWorld('electron', {
     getCategoryById: (id) => ipcRenderer.invoke('get-category-by-id', id),
     getCategoryIdByType: (type) => ipcRenderer.invoke('get-category-id-by-type', type),
     openEditCategoryWindow: () => ipcRenderer.send('open-edit-categories-window'),
+    openExpenseEditWindow: (expense, year) => ipcRenderer.send('open-expense-edit-window', expense, year),
 })
 

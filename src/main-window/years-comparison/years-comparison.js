@@ -61,6 +61,7 @@ async function createTable() {
                 window.electron.openCategoryExpenseDetailsWindow(year, category.id);
             });
             let sum = await sumCategoryExpensesByYear(category.id, year);
+            console.log(sum);
             if (sum !== '0.00') rowContainsAllZeroValues = false;
             td.textContent = sum;
             row.appendChild(td);

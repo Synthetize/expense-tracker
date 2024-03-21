@@ -72,7 +72,14 @@ function goBack() {
 }
 
 
-const elements = [select, toDate, fromDate, radioForm, dropdown];
+select.addEventListener('change', async () => {
+    getYearExpenses(select.value).then(r => {
+        applyFilter()
+    })
+});
+
+
+const elements = [toDate, fromDate, radioForm, dropdown];
 elements.forEach(element => {
     element.addEventListener('change', applyFilter);
 });
@@ -86,8 +93,6 @@ function applyFilter() {
     sortBy(filteredExpenses);
     updateTable(filteredExpenses);
 }
-
-
 
 
 function getSelectedCategories() {
@@ -156,7 +161,6 @@ function sortBy(expenses) {
 }
 
 
-
 function updateTable(expenses) {
     document.getElementById('table-body').innerHTML = '';
 
@@ -178,6 +182,10 @@ function updateTable(expenses) {
         const row = document.createElement('tr');
         Object.keys(expense).forEach(key => {
             const cell = document.createElement('td');
+            cell.addEventListener('click', () => {
+                window.electron.openExpenseEditWindow(expense, select.value);
+                console.log(expense, select.value)
+            })
             cell.innerText = expense[key];
             row.appendChild(cell);
         })

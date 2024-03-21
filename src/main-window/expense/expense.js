@@ -7,6 +7,8 @@ const select_categories = document.getElementById('expense-category');
 const submitButton = document.getElementById('submit');
 const confirmAlert = document.getElementById('confirm-alert');
 const errorAlert = document.getElementById('error-alert');
+const expense_amount = document.getElementById('expense-amount');
+const expense_description = document.getElementById('expense-description');
 
 errorAlert.style.display = 'none';
 confirmAlert.style.display = 'none';
@@ -49,6 +51,9 @@ submitButton.addEventListener('click', async (event) => {
         errorAlert.style.display = 'block';
         errorAlert.innerText = error.message;
     } finally {
+        expense_amount.value = '';
+        expense_description.value = '';
+        installment_number.value = '';
         setTimeout(() => {
             errorAlert.style.display = 'none';
             confirmAlert.style.display = 'none';
@@ -70,6 +75,7 @@ function validateExpense(expense) {
     } else if (isNaN(expense.amount)) {
         throw new Error('L\'importo deve essere un numero');
     }
+
     if (!installment_number.disabled) {
         if (installment_number.value === '' || isNaN(installment_number.value) || installment_number.value < 2) {
             throw new Error('Numero di rate non valido');

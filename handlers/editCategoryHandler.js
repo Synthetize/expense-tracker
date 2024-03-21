@@ -13,7 +13,6 @@ if(app.isPackaged) {
 
 function editCategoryHandler() {
     ipcMain.handle('update-category', async (event, category) => {
-        console.log('update-category', category)
         const filePath = path.join(filesPath, 'categories.json')
         let categories = await fs_extra.readJson(filePath)
 

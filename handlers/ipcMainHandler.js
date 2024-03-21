@@ -117,7 +117,7 @@ function ipcMainHandler() {
 
     ipcMain.on('open-edit-categories-window', async (event) => {
         const win = new BrowserWindow({
-            height: 500,
+            height: 450,
             width: 600,
             resizable: false,
             webPreferences: {
@@ -129,6 +129,21 @@ function ipcMainHandler() {
         })
         //win.webContents.openDevTools()
         await win.loadFile(path.join(__dirname, '..', 'src', 'edit-categories', 'editCategories.html'))
+    })
+
+    ipcMain.on('open-expense-edit-window', async (event, expense, year) => {
+        const win = new BrowserWindow({
+            minHeight: 720,
+            minWidth: 1100,
+            webPreferences: {
+                preload: path.join(__dirname, '..', 'src', 'edit-expense', 'editExpense-preload.js'),
+                nodeIntegration: false,
+                contextIsolation: true,
+                enableRemoteModule: false
+            }
+        })
+        win.webContents.openDevTools()
+        await win.loadFile(path.join(__dirname, '..', 'src', 'edit-expense', 'editExpense.html'), {search: `?expense=${JSON.stringify(expense)}&year=${year}`})
     })
 
     ipcMain.handle('add-new-category', async (event, category_name) => {

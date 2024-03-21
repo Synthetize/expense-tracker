@@ -4,6 +4,7 @@ const {ipcMainHandler} = require('./handlers/ipcMainHandler')
 const {ipcMainConverterHandler} = require('./handlers/ConverterHandler')
 const {ipcMainCategoryDetailsHandler} = require('./handlers/CategoryDetailsHandler')
 const {ipcMainEditCategoryHandler} = require("./handlers/editCategoryHandler");
+const {editExpenseHandler} = require("./handlers/editExpenseHandler");
 
 const menuItems = [
     {
@@ -76,6 +77,7 @@ ipcMainHandler()
 ipcMainConverterHandler()
 ipcMainCategoryDetailsHandler()
 ipcMainEditCategoryHandler()
+editExpenseHandler()
 
 
 
