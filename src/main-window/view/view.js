@@ -16,13 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 window.electron.getYears().then(years => {
+    years.reverse()
     years.forEach(year => {
         const option = document.createElement('option');
         option.value = year;
         option.innerText = year;
         select.appendChild(option);
     });
-    select.selectedIndex = select.options.length - 1;
+    select.selectedIndex = select.options[0].index;
     select.value = select.options[select.selectedIndex].value;
     getYearExpenses(select.value).then(r => {
         applyFilter()

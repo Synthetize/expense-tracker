@@ -45,6 +45,7 @@ async function createTable() {
     }
     table_body.insertBefore(totalRow, table_body.firstChild);
 
+    categories.sort((a, b) => a.type.localeCompare(b.type));
     for (let category of categories) {
 
         let row = document.createElement('tr');

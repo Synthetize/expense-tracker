@@ -55,11 +55,13 @@ async function updateTable() {
 
         const categories = filteredList.map(expense => expense.category);
         const uniqueCategories = [...new Set(categories)];
+        uniqueCategories.sort((a, b) => a.localeCompare(b));
 
-        uniqueCategories.forEach(async (category) => {
+
+        uniqueCategories.forEach((category) => {
             const tr = document.createElement('tr');
             const tdCategory = document.createElement('td');
-            tdCategory.innerText = await window.electron.getCategoryById(category)
+            tdCategory.innerText = category;
             tr.appendChild(tdCategory);
             const tdSum = document.createElement('td');
             tdSum.innerText = filteredList.filter(expense => expense.category === category).reduce((acc, expense) => acc + expense.amount, 0).toFixed(2);
@@ -97,6 +99,7 @@ function addTotalRow(list) {
 }
 
 async function applyFilters(list) {
+
     let filteredList = list;
     if (fromDate.value !== '') {
         filteredList = filteredList.filter(expense => new Date(expense.date) >= new Date(fromDate.value));
@@ -104,5 +107,11 @@ async function applyFilters(list) {
     if (toDate.value !== '') {
         filteredList = filteredList.filter(expense => new Date(expense.date) <= new Date(toDate.value));
     }
+
+    for (const expense of list) {
+        let categoryId = expense.category;
+        expense.category = await window.electron.getCategoryById(categoryId);
+    }
+
     return filteredList;
 }
