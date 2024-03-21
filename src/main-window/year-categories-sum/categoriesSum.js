@@ -36,8 +36,7 @@ function getYearExpenses(year) {
 }
 
 year_select.addEventListener('change', (event) => {
-    getYearExpenses(event.target.value);
-    updateTable();
+    getYearExpenses(event.target.value)
 })
 
 const elements = [fromDate, toDate];
