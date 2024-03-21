@@ -133,8 +133,9 @@ function ipcMainHandler() {
 
     ipcMain.on('open-expense-edit-window', async (event, expense, year) => {
         const win = new BrowserWindow({
-            minHeight: 720,
-            minWidth: 1100,
+            height: 510,
+            width: 900,
+            resizable: false,
             webPreferences: {
                 preload: path.join(__dirname, '..', 'src', 'edit-expense', 'editExpense-preload.js'),
                 nodeIntegration: false,
@@ -142,7 +143,7 @@ function ipcMainHandler() {
                 enableRemoteModule: false
             }
         })
-        win.webContents.openDevTools()
+        //win.webContents.openDevTools()
         await win.loadFile(path.join(__dirname, '..', 'src', 'edit-expense', 'editExpense.html'), {search: `?expense=${JSON.stringify(expense)}&year=${year}`})
     })
 
