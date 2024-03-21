@@ -21,7 +21,7 @@ categories_select.addEventListener('change', (event) => {
 
 confirm_button.addEventListener('click', async (event) => {
     const category = {
-        id: categories_select.value,
+        id: parseInt(categories_select.value),
         type: input_category.value
     }
     try {

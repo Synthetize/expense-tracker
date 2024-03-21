@@ -28,5 +28,3 @@ function addCategory(event) {
 function openEditCategoriesWindows() {
     window.electron.openEditCategoryWindow();
 }
-
-window.location.href = './src/main-window/year-categories-sum/categoriesSum.html';
