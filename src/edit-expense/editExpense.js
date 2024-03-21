@@ -83,6 +83,5 @@ saveButton.addEventListener('click', async () => {
 
 async function findCategoryId() {
     let category = categorySelect.options[categorySelect.selectedIndex].text
-    console.log(category)
     return await window.electron.getCategoryIdByType(category)
 }

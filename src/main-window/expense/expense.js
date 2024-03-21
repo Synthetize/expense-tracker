@@ -115,7 +115,6 @@ async function createInstallment() {
             description: document.getElementById('expense-description').value +
                 ` - Rata ${i + 1} di ${installment_number.value}`
         }
-        console.log(installment);
         validateExpense(installment)
         await window.electron.newExpense(installment, date.getFullYear());
         date.setMonth(date.getMonth() + 1);

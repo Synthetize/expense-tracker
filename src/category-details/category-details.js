@@ -5,7 +5,6 @@ const table = document.getElementById('category-expenses-table')
 const table_body = document.getElementById('table-body');
 
 window.electron.getCategoryDetailsByYear(year, category).then(async expenses => {
-    console.log(expenses)
     for (const expense of expenses) {
         expense.category = await window.electron.getCategoryById(expense.category);
         let row = document.createElement('tr');

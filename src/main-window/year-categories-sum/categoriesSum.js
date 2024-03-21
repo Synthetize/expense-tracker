@@ -31,7 +31,6 @@ function getYearExpenses(year) {
             expense.date = date;
         })
         expensesList = expenses;
-        console.log(expensesList);
         updateTable();
     })
 }

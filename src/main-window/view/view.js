@@ -107,7 +107,6 @@ function getSelectedCategories() {
 function filterBySelectedCategories(expenses, selectedCategories) {
     if (selectedCategories.length > 0) {
         expenses = expenses.filter(expense => selectedCategories.includes(expense.category));
-        console.log(expenses)
     }
     return expenses;
 }
@@ -184,7 +183,6 @@ function updateTable(expenses) {
             const cell = document.createElement('td');
             cell.addEventListener('click', () => {
                 window.electron.openExpenseEditWindow(expense, select.value);
-                console.log(expense, select.value)
             })
             cell.innerText = expense[key];
             row.appendChild(cell);
