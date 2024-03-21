@@ -117,8 +117,9 @@ function ipcMainHandler() {
 
     ipcMain.on('open-edit-categories-window', async (event) => {
         const win = new BrowserWindow({
-            height: 450,
+            height: 750,
             width: 600,
+
             resizable: false,
             webPreferences: {
                 preload: path.join(__dirname, '..', 'src', 'edit-categories', 'editCategories-preload.js'),
@@ -147,21 +148,6 @@ function ipcMainHandler() {
         await win.loadFile(path.join(__dirname, '..', 'src', 'edit-expense', 'editExpense.html'), {search: `?expense=${JSON.stringify(expense)}&year=${year}`})
     })
 
-    ipcMain.handle('add-new-category', async (event, category_name) => {
-        let categories = await fs_extra.readJson(path.join(filesPath, 'categories.json'))
-        if(category_name === '')
-            return {success: false, message: 'Invalid category.'}
-        for (let category of categories) {
-            if (category.type === category_name) {
-                return {success: false, message: 'Category already exists.'}
-            }
-        }
-        let id = categories[categories.length - 1].id + 1
-        categories.push({id: id, type: category_name})
-        await fs_extra.writeJson(path.join(filesPath, 'categories.json'), categories, {spaces: 2})
-        return {success: true, message: 'Category added successfully.'}
-
-    })
 }
 
 module.exports = {ipcMainHandler}

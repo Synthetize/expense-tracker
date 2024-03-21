@@ -2,6 +2,9 @@ const categories_select = document.getElementById('categories-select');
 const input_category = document.getElementById('new-category-name');
 const confirm_button = document.getElementById('confirm-button');
 const error_alert = document.getElementById('error-alert');
+const addCategoryButton = document.getElementById('add-category-button');
+
+
 
 error_alert.style.display = 'none';
 window.electron.getCategories().then(categories => {
@@ -37,4 +40,23 @@ confirm_button.addEventListener('click', async (event) => {
         }, 3000)
     }
 })
+
+addCategoryButton.addEventListener('click', (event) => {
+    addCategory(event);
+});
+
+function addCategory(event) {
+    const input = document.getElementById('category-name');
+    window.electron.addNewCategory(input.value).then(result => {
+        if(!result.success) {
+            error_alert.style.display = 'block';
+            error_alert.innerText = result.message;
+        }
+
+        setTimeout(() => {
+            error_alert.style.display = 'none';
+        }, 3000)
+    })
+}
+
 
