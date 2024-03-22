@@ -66,8 +66,9 @@ async function updateTable() {
             const tdSum = document.createElement('td');
             tdSum.innerText = filteredList.filter(expense => expense.category === category).reduce((acc, expense) => acc + expense.amount, 0).toFixed(2);
             tr.appendChild(tdSum);
-            tr.addEventListener('click', () => {
-                window.electron.openCategoryExpenseDetailsWindow(year_select.value, category)
+            tr.addEventListener('click', async () => {
+                let categoryId = await window.electron.getCategoryIdByType(category);
+                window.electron.openCategoryExpenseDetailsWindow(year_select.value, categoryId)
             })
             tbody.appendChild(tr);
         })
@@ -108,7 +109,7 @@ async function applyFilters(list) {
         filteredList = filteredList.filter(expense => new Date(expense.date) <= new Date(toDate.value));
     }
 
-    for (const expense of list) {
+    for (const expense of filteredList) {
         let categoryId = expense.category;
         expense.category = await window.electron.getCategoryById(categoryId);
     }

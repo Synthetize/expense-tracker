@@ -1,6 +1,7 @@
 const table = document.getElementById('comparison-table');
 const table_head = document.getElementById('table-head');
 const table_body = document.getElementById('table-body');
+const spinner = document.getElementById('spinner');
 let categories = []
 let years = []
 

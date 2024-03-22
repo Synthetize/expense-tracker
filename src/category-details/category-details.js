@@ -4,8 +4,12 @@ let category = params.get('category');
 const table = document.getElementById('category-expenses-table')
 const table_body = document.getElementById('table-body');
 
+
 window.electron.getCategoryDetailsByYear(year, category).then(async expenses => {
     table_body.innerHTML = '';
+    console.log(year);
+    console.log(category);
+    console.log(expenses);
     for (const expense of expenses) {
         expense.category = await window.electron.getCategoryById(expense.category);
         let row = document.createElement('tr');

@@ -12,6 +12,7 @@ async function convert() {
     const year_expenses = await window.electron.getOldFilesExpenses();
     //year_expenses is an object with the year and the expenses, a string with all the expenses concatenated
     for (const object of year_expenses) {
+        object.expenses = object.expenses.substring(436);
         let convertedExpensesToJSON = [];
         for (let i = 0; i < object.expenses.length / 436; i++) {
             let line = object.expenses.substring(i * 436, (i + 1) * 436);

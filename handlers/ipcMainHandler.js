@@ -111,7 +111,7 @@ function ipcMainHandler() {
                 enableRemoteModule: false
             }
         })
-        //win.webContents.openDevTools()
+        win.webContents.openDevTools()
         await win.loadFile(path.join(__dirname, '..', 'src', 'category-details', 'category-details.html'), {search: `?year=${year}&category=${category}`})
     })
 

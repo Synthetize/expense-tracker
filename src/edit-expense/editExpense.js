@@ -49,7 +49,7 @@ function validateInput() {
     if (expense_date.value === '' || expense_amount.value === '') {
         throw new Error('La data e l\'importo sono campi obbligatori.')
     } else {
-        let date = parseInt(new Date(expense_date.value).getFullYear())
+        let date = new Date(expense_date.value).getFullYear()
         if (date !== parseInt(year))
             throw new Error('La data deve essere compresa nell\'anno' + year)
     }
