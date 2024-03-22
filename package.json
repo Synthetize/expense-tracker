@@ -22,7 +22,8 @@
     "@electron-forge/plugin-auto-unpack-natives": "^7.3.0",
     "@electron-forge/plugin-fuses": "^7.3.0",
     "electron": "^29.1.1",
-    "electronmon": "^2.0.2"
+    "electronmon": "^2.0.2",
+    "typescript": "^5.4.3"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",

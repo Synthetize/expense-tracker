@@ -14,9 +14,14 @@ contextBridge.exposeInMainWorld('electron', {
     getYears: () => ipcRenderer.invoke('get-years'),
     getSubjects: () => ipcRenderer.invoke('get-subjects'),
     getCategories: () => ipcRenderer.invoke('get-categories'),
+    getExpensesByYear: (year) => ipcRenderer.invoke('get-expenses-by-year', year),
+    saveExpensesByYear: (year, expenses) => ipcRenderer.invoke('save-expenses-by-year', year, expenses),
+
+
+
     getNextAvailableIdByYear: (year) => ipcRenderer.invoke('get-next-available-id-by-year', year),
     newExpense: (expense, year) => ipcRenderer.invoke('new-expense', expense, year),
-    getExpensesByYear: (year) => ipcRenderer.invoke('get-expenses-by-year', year),
+
     openCategoryExpenseDetailsWindow: (year, category) => ipcRenderer.send('open-category-expense-details-window', year, category),
     getCategoryById: (id) => ipcRenderer.invoke('get-category-by-id', id),
     getCategoryIdByType: (type) => ipcRenderer.invoke('get-category-id-by-type', type),
