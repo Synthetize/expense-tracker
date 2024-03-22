@@ -25,8 +25,9 @@ window.electron.getYears().then(years => {
 })
 
 function getYearExpenses(year) {
-    window.electron.getExpensesByYear(year_select.options[year_select.selectedIndex].value).then(expenses => {
+    window.electron.getExpensesByYear(year).then(expenses => {
         expenses.map(expense => {
+
             let date = expense.date.split('-').reverse().join('-');
             expense.date = date;
         })
@@ -49,29 +50,26 @@ elements.forEach(element => {
 async function updateTable() {
     tbody.innerHTML = '';
     thead.innerHTML = '';
-    applyFilters(expensesList).then(filteredList => {
+    applyFilters(expensesList).then(async filteredList => {
         addTableHeader()
         addTotalRow(filteredList)
 
         const categories = filteredList.map(expense => expense.category);
         const uniqueCategories = [...new Set(categories)];
-        uniqueCategories.sort((a, b) => a.localeCompare(b));
 
-
-        uniqueCategories.forEach((category) => {
+        for (const category of uniqueCategories) {
             const tr = document.createElement('tr');
             const tdCategory = document.createElement('td');
-            tdCategory.innerText = category;
+            tdCategory.innerText = await window.electron.getCategoryById(category);
             tr.appendChild(tdCategory);
             const tdSum = document.createElement('td');
             tdSum.innerText = filteredList.filter(expense => expense.category === category).reduce((acc, expense) => acc + expense.amount, 0).toFixed(2);
             tr.appendChild(tdSum);
             tr.addEventListener('click', async () => {
-                let categoryId = await window.electron.getCategoryIdByType(category);
-                window.electron.openCategoryExpenseDetailsWindow(year_select.value, categoryId)
+                window.electron.openCategoryExpenseDetailsWindow(year_select.value, category)
             })
             tbody.appendChild(tr);
-        })
+        }
     })
 
 }
@@ -100,18 +98,12 @@ function addTotalRow(list) {
 }
 
 async function applyFilters(list) {
-
     let filteredList = list;
     if (fromDate.value !== '') {
         filteredList = filteredList.filter(expense => new Date(expense.date) >= new Date(fromDate.value));
     }
     if (toDate.value !== '') {
         filteredList = filteredList.filter(expense => new Date(expense.date) <= new Date(toDate.value));
-    }
-
-    for (const expense of filteredList) {
-        let categoryId = expense.category;
-        expense.category = await window.electron.getCategoryById(categoryId);
     }
 
     return filteredList;
