@@ -10,7 +10,6 @@ const expense_description = document.getElementById('expense-description')
 const expense_id = document.getElementById('expense-id')
 const saveButton = document.getElementById('submit')
 const errorAlert = document.getElementById('error-alert')
-let categoriesList = []
 
 
 window.electron.getCategories().then(categories => {
