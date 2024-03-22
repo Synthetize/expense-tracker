@@ -1,84 +1,48 @@
 let data = null
-const select = document.getElementById('year-options');
+const yearSelect = document.getElementById('year-options');
 const fromDate = document.getElementById('from-date');
 const toDate = document.getElementById('to-date');
-const applyButton = document.getElementById('apply-filter');
 const radioForm = document.getElementById('radio-form');
-const amountField = document.getElementById('total-amount');
+const tbody = document.getElementById('table-body');
+
+
 const dropdown = document.getElementById('dropdown-menu');
 let expensesList = []
+let categoriesList = []
 
-document.addEventListener('DOMContentLoaded', () => {
-    const firstRadioButton = document.querySelector('#radio-form input[type="radio"]:first-child');
-    firstRadioButton.checked = true;
-    radioForm.value = firstRadioButton.value;
-
-})
-
-window.electron.getYears().then(years => {
-    years.reverse()
-    years.forEach(year => {
-        const option = document.createElement('option');
-        option.value = year;
-        option.innerText = year;
-        select.appendChild(option);
-    });
-    select.selectedIndex = select.options[0].index;
-    select.value = select.options[select.selectedIndex].value;
-    getYearExpenses(select.value).then(r => {
-        applyFilter()
-    })
-});
-
-async function getYearExpenses(year) {
-    expensesList = await window.electron.getExpensesByYear(year)
-    for (let i = 0; i < expensesList.length; i++) {
-        expensesList[i].category = await window.electron.getCategoryById(expensesList[i].category)
-    }
-}
-
-
-window.electron.getCategories().then(categories => {
-    categories.sort((a, b) => a.type.localeCompare(b.type));
-    categories.forEach(category => {
-        const li = document.createElement('li');
-        li.className = 'dropdown-item';
-        li.innerHTML = `<a class="dropdown-item" href="#">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="${category.type}"/>
-                                        <label class="form-check-label" for="${category.type}">${category.type}</label>
-                                    </div>
-                                </a>`;
-        li.addEventListener('click', event => {
-            //prevents the dropdown from closing after clicking on a checkbox label
-            event.stopPropagation();
-            //if clicked on a checkbox label, toggle the checkbox
-            const checkbox = document.getElementById(category.type);
-            checkbox.checked = !checkbox.checked;
-        })
-        dropdown.appendChild(li);
-    })
-})
-
-function resetSelectedCheckBoxes() {
-    const checkboxes = document.querySelectorAll('.dropdown-item input[type="checkbox"]');
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = false;
-    });
-    applyFilter()
-}
 
 function goBack() {
     window.history.back();
 }
 
+window.electron.getYears().then(async years => {
+    years.forEach(year => {
+        const option = document.createElement('option');
+        option.value = year;
+        option.innerText = year;
+        yearSelect.appendChild(option);
+    });
+    yearSelect.selectedIndex = yearSelect.options[0].index;
+    yearSelect.value = yearSelect.options[yearSelect.selectedIndex].value;
+    expensesList = await window.electron.getExpensesByYear(yearSelect.value);
+    applyFilter();
 
-select.addEventListener('change', async () => {
-    getYearExpenses(select.value).then(r => {
-        applyFilter()
-    })
 });
 
+window.electron.getCategories().then(categories => {
+    categoriesList = categories.sort((a, b) => a.type.localeCompare(b.type));
+})
+
+
+
+const firstRadioButton = document.querySelector('#radio-form input[type="radio"]:first-child');
+firstRadioButton.checked = true;
+radioForm.value = firstRadioButton.value;
+
+yearSelect.addEventListener('change', async () => {
+    expensesList = await window.electron.getExpensesByYear(yearSelect.value);
+    applyFilter();
+});
 
 const elements = [toDate, fromDate, radioForm, dropdown];
 elements.forEach(element => {
@@ -86,43 +50,72 @@ elements.forEach(element => {
 });
 
 
+// window.electron.getCategories().then(categories => {
+//     categories.sort((a, b) => a.type.localeCompare(b.type));
+//     categories.forEach(category => {
+//         const li = document.createElement('li');
+//         li.className = 'dropdown-item';
+//         li.innerHTML = `<a class="dropdown-item" href="#">
+//                                     <div class="form-check">
+//                                         <input class="form-check-input" type="checkbox" value="" id="${category.type}"/>
+//                                         <label class="form-check-label" for="${category.type}">${category.type}</label>
+//                                     </div>
+//                                 </a>`;
+//         li.addEventListener('click', event => {
+//             //prevents the dropdown from closing after clicking on a checkbox label
+//             event.stopPropagation();
+//             //if clicked on a checkbox label, toggle the checkbox
+//             const checkbox = document.getElementById(category.type);
+//             checkbox.checked = !checkbox.checked;
+//         })
+//         dropdown.appendChild(li);
+//     })
+// })
+
+// function resetSelectedCheckBoxes() {
+//     const checkboxes = document.querySelectorAll('.dropdown-item input[type="checkbox"]');
+//     checkboxes.forEach(checkbox => {
+//         checkbox.checked = false;
+//     });
+//     applyFilter()
+// }
+
+
 function applyFilter() {
     let filteredExpenses = [...expensesList];
-    const selectedCategories = getSelectedCategories()
-    filteredExpenses = filterBySelectedCategories(filteredExpenses, selectedCategories);
+    //const selectedCategories = getSelectedCategories()
+    //filteredExpenses = filterBySelectedCategories(filteredExpenses, selectedCategories);
     filteredExpenses = filterByDate(filteredExpenses);
     sortBy(filteredExpenses);
     updateTable(filteredExpenses);
 }
 
 
-function getSelectedCategories() {
-    let tempSelectedCategories = [];
-    const checkboxes = document.querySelectorAll('.dropdown-item input[type="checkbox"]:checked');
-    checkboxes.forEach(checkbox => {
-        tempSelectedCategories.push(checkbox.id);
-    })
-    return tempSelectedCategories;
-}
-
-function filterBySelectedCategories(expenses, selectedCategories) {
-    if (selectedCategories.length > 0) {
-        expenses = expenses.filter(expense => selectedCategories.includes(expense.category));
-    }
-    return expenses;
-}
+// function getSelectedCategories() {
+//     let tempSelectedCategories = [];
+//     const checkboxes = document.querySelectorAll('.dropdown-item input[type="checkbox"]:checked');
+//     checkboxes.forEach(checkbox => {
+//         tempSelectedCategories.push(checkbox.id);
+//     })
+//     return tempSelectedCategories;
+// }
+//
+// function filterBySelectedCategories(expenses, selectedCategories) {
+//     if (selectedCategories.length > 0) {
+//         expenses = expenses.filter(expense => selectedCategories.includes(expense.category));
+//     }
+//     return expenses;
+// }
 
 function filterByDate(expenses) {
     if (fromDate.value !== '') {
         expenses = expenses.filter(expense => {
-            let expenseDate = expense.date.split('-').reverse().join('-');
-            return new Date(expenseDate) >= new Date(fromDate.value);
+            return new Date(expense.date) >= new Date(fromDate.value);
         });
     }
     if (toDate.value !== '') {
         expenses = expenses.filter(expense => {
-            let expenseDate = expense.date.split('-').reverse().join('-');
-            return new Date(expenseDate) <= new Date(toDate.value)
+            return new Date(expense.date) <= new Date(toDate.value)
         });
     }
     return expenses;
@@ -142,40 +135,39 @@ function sortBy(expenses) {
             break;
         case 'date-asc':
             expenses.sort((a, b) => {
-                let dateA = a.date.split('-').reverse().join('-');
-                let dateB = b.date.split('-').reverse().join('-');
-                return new Date(dateA) - new Date(dateB);
+                return new Date(a.date) - new Date(b.date);
             });
             break;
         case 'date-des':
             expenses.sort((a, b) => {
-                let dateA = a.date.split('-').reverse().join('-');
-                let dateB = b.date.split('-').reverse().join('-');
-                return new Date(dateB) - new Date(dateA);
+                return new Date(b.date) - new Date(a.date);
             });
             break;
         case 'category':
-            expenses.sort((a, b) => a.category.localeCompare(b.category));
+            sortByCategory(expenses, categoriesList);
             break;
     }
+}
+
+function sortByCategory(expenses, categories) {
+    expenses.sort((a, b) => {
+        // Trova le categorie corrispondenti per ogni spesa
+        const categoryA = categories.find(category => category.id === a.category);
+        console.log(categoryA)
+        const categoryB = categories.find(category => category.id === b.category);
+        console.log(categoryB)
+
+        // Confronta i nomi delle categorie
+        return categoryA.type.localeCompare(categoryB.type);
+    });
 }
 
 
 function updateTable(expenses) {
     document.getElementById('table-body').innerHTML = '';
 
-    // Calcola la somma totale delle spese
-    const totalAmount = expenses.reduce((total, expense) => total + expense.amount, 0).toFixed(2);
-
-    // Crea una nuova riga per la somma totale
-    const totalRow = document.createElement('tr');
-    const totalCell = document.createElement('td');
-    totalCell.innerText = `Totale: ${totalAmount} €`;
-    totalCell.colSpan = 6; // Assumendo che la tua tabella abbia 6 colonne
-    totalRow.appendChild(totalCell);
-
-    // Aggiungi la riga della somma totale in cima alla tabella
-    document.getElementById('table-body').appendChild(totalRow);
+    expenses = changeFormat(expenses);
+    createTotalRow(expenses)
 
     //aggiungi le spese nella tabella
     expenses.forEach(expense => {
@@ -183,11 +175,35 @@ function updateTable(expenses) {
         Object.keys(expense).forEach(key => {
             const cell = document.createElement('td');
             cell.addEventListener('click', () => {
-                window.electron.openExpenseEditWindow(expense, select.value);
+                window.electron.openExpenseEditWindow(expense, yearSelect.value);
             })
             cell.innerText = expense[key];
             row.appendChild(cell);
         })
         document.getElementById('table-body').appendChild(row);
     });
+}
+
+function changeFormat(expenses) {
+    return expenses.map(expense => {
+        const category = categoriesList.find(category => parseInt(category.id) === parseInt(expense.category))
+        return {
+            id: expense.id,
+            subject: expense.subject,
+            date: expense.date.split('-').reverse().join('-'),
+            category: category.type,
+            amount: expense.amount,
+            description: expense.description,
+        }
+    })
+}
+
+function createTotalRow(expenses) {
+    const totalRow = document.createElement('tr');
+    const totalCell = document.createElement('td');
+    let totalSum = expenses.reduce((total, expense) => total + expense.amount, 0).toFixed(2);
+    totalCell.innerText = `Totale: ${totalSum} €`;
+    totalCell.colSpan = 6;
+    totalRow.appendChild(totalCell);
+    tbody.appendChild(totalRow);
 }

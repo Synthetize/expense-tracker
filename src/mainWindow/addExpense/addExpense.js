@@ -94,7 +94,7 @@ async function createExpense() {
         id: expenses.length === 0 ? 0 : expenses[expenses.length - 1].id + 1,
         subject: document.getElementById('expense-subject').value,
         date: document.getElementById('expense-date').value,
-        category: document.getElementById('expense-category').value,
+        category: parseInt(document.getElementById('expense-category').value),
         amount: parseFloat(document.getElementById('expense-amount').value),
         description: document.getElementById('expense-description').value
     }
@@ -122,7 +122,7 @@ async function createInstallment() {
             id: expenses.length === 0 ? 0 : expenses[expenses.length - 1].id + 1,
             subject: document.getElementById('expense-subject').value,
             date: date.toISOString().slice(0, 10),
-            category: document.getElementById('expense-category').value,
+            category: parseInt(document.getElementById('expense-category').value),
             amount: parseFloat(document.getElementById('expense-amount').value),
             description: document.getElementById('expense-description').value +
                 ` - Rata ${i + 1} di ${installment_number.value}`
@@ -134,4 +134,5 @@ async function createInstallment() {
 
         date.setMonth(date.getMonth() + 1);
     }
+    confirmAlert.style.display = 'block';
 }

@@ -13,7 +13,7 @@ function mainWindowHandler() {
             let year = file.match(/\d+/)[0]
             if (!years.includes(year)) years.push(year)
         })
-        return years
+        return years.reverse()
     })
 
     ipcMain.handle('get-subjects', async () => {
