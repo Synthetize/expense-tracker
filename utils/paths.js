@@ -17,4 +17,5 @@ module.exports = {
     oldFilesFolderPath: path.join(getFilesFolderPath(), 'oldFiles'),
     subjectsFilePath: path.join(getFilesFolderPath(), 'subjects.json'),
     categoriesFilesPath: path.join(getFilesFolderPath(), 'categories.json'),
+    editExpenseFolderPath: path.join(__dirname, '..', 'src', 'editExpense'),
 }

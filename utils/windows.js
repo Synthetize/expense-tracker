@@ -1,7 +1,6 @@
-const { BrowserWindow } = require('electron')
+const {BrowserWindow} = require('electron')
 const path = require('path')
 const paths = require('./paths')
-
 
 
 const createMainWindow = () => {
@@ -9,11 +8,11 @@ const createMainWindow = () => {
         minHeight: 720,
         minWidth: 1100,
         webPreferences: {
-            preload: path.join(paths.mainWindowPath,'preload.js')
+            preload: path.join(paths.mainWindowPath, 'preload.js')
         }
     })
     win.webContents.openDevTools()
-    win.loadFile(path.join(paths.mainWindowPath, 'index' ,'index.html'))
+    win.loadFile(path.join(paths.mainWindowPath, 'index', 'index.html'))
 }
 
 const createConverterWindow = () => {
@@ -28,12 +27,23 @@ const createConverterWindow = () => {
     win.loadFile(path.join(paths.converterPath, 'converter.html'))
 }
 
-
-
-
+const createExpenseEditWindow = (expense, year) => {
+    const win = new BrowserWindow({
+        height: 510,
+        width: 900,
+        resizable: false,
+        webPreferences: {
+            preload: path.join(paths.editExpenseFolderPath, 'editExpense-preload.js')
+        }
+    })
+    win.webContents.openDevTools()
+    win.loadFile(path.join(paths.editExpenseFolderPath, 'editExpense.html'),
+        {search: `?year=${year}&expense=${JSON.stringify(expense)}`})
+}
 
 
 module.exports = {
     createMainWindow,
-    createConverterWindow
+    createConverterWindow,
+    createExpenseEditWindow
 }

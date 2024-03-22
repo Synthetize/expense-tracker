@@ -3,6 +3,7 @@ const path = require('path')
 const fs = require('fs')
 const fs_extra = require('fs-extra')
 const {expensesFolderPath, subjectsFilePath, categoriesFilesPath} = require('../../utils/paths')
+const {createExpenseEditWindow} = require('../../utils/windows')
 
 
 function mainWindowHandler() {
@@ -51,6 +52,10 @@ function mainWindowHandler() {
         } catch (error) {
             console.error(error)
         }
+    })
+
+    ipcMain.on('open-expense-edit-window', (event, expense, year) => {
+        createExpenseEditWindow(expense, year)
     })
 
 

@@ -10,14 +10,11 @@ const expense_description = document.getElementById('expense-description')
 const expense_id = document.getElementById('expense-id')
 const saveButton = document.getElementById('submit')
 const errorAlert = document.getElementById('error-alert')
+let categoriesList = []
 
 
-Promise.all([
-    window.electron.getCategories(),
-    window.electron.getSubjects()
-]).then(([categories, subjects]) => {
+window.electron.getCategories().then(categories => {
     categories = categories.sort((a, b) => a.type.localeCompare(b.type))
-
     for (let category of categories) {
         let option = document.createElement('option')
         option.value = category.id
@@ -27,7 +24,11 @@ Promise.all([
             option.selected = true;
         }
     }
-    for (let subject of subjects) {
+
+})
+
+window.electron.getSubjects().then(subjects => {
+for (let subject of subjects) {
         let option = document.createElement('option')
         option.value = subject.id
         option.text = subject.name
@@ -37,6 +38,7 @@ Promise.all([
         }
     }
 })
+
 
 errorAlert.style.display = 'none'
 expense_id.disabled = true
@@ -59,8 +61,8 @@ saveButton.addEventListener('click', async () => {
     let newExpense = {
         id: expense.id,
         subject: subjectsSelect.options[subjectsSelect.selectedIndex].text,
-        date: expense_date.value.split('-').reverse().join('-'),
-        category: await findCategoryId(),
+        date: expense_date.value,
+        category: categorySelect.options[categorySelect.selectedIndex].value,
         amount: parseFloat(expense_amount.value),
         description: expense_description.value
     }
@@ -80,8 +82,3 @@ saveButton.addEventListener('click', async () => {
         }, 3000)
     }
 })
-
-async function findCategoryId() {
-    let category = categorySelect.options[categorySelect.selectedIndex].text
-    return await window.electron.getCategoryIdByType(category)
-}

@@ -16,6 +16,13 @@ contextBridge.exposeInMainWorld('electron', {
     getCategories: () => ipcRenderer.invoke('get-categories'),
     getExpensesByYear: (year) => ipcRenderer.invoke('get-expenses-by-year', year),
     saveExpensesByYear: (year, expenses) => ipcRenderer.invoke('save-expenses-by-year', year, expenses),
+    openExpenseEditWindow: (expense, year) => ipcRenderer.send('open-expense-edit-window', expense, year),
+
+
+
+
+
+    openEditCategoryWindow: () => ipcRenderer.send('open-edit-categories-window'),
 
 
 
@@ -25,7 +32,6 @@ contextBridge.exposeInMainWorld('electron', {
     openCategoryExpenseDetailsWindow: (year, category) => ipcRenderer.send('open-category-expense-details-window', year, category),
     getCategoryById: (id) => ipcRenderer.invoke('get-category-by-id', id),
     getCategoryIdByType: (type) => ipcRenderer.invoke('get-category-id-by-type', type),
-    openEditCategoryWindow: () => ipcRenderer.send('open-edit-categories-window'),
-    openExpenseEditWindow: (expense, year) => ipcRenderer.send('open-expense-edit-window', expense, year),
+
 })
 
