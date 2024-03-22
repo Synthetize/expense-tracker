@@ -7,6 +7,9 @@ const submitButton = document.getElementById('submit');
 const confirmAlert = document.getElementById('confirm-alert');
 const errorAlert = document.getElementById('error-alert');
 
+
+
+
 errorAlert.style.display = 'none';
 confirmAlert.style.display = 'none';
 installment_number.disabled = true;
@@ -35,6 +38,8 @@ window.electron.getCategories()
     .then(categories => {
         categories.sort((a, b) => a.type.localeCompare(b.type));
         addOptionsToSelect(select_categories, categories, 'id', 'type');
+        select_categories.value = localStorage.getItem('lastSelectedCategory') || 1;
+        localStorage.clear()
     })
     .catch(error => {
         console.error('Failed to get categories:', error);
@@ -72,7 +77,7 @@ function validateFields() {
 }
 
 submitButton.addEventListener('click', async (event) => {
-    event.preventDefault();
+     localStorage.setItem('lastSelectedCategory', select_categories.value);
     if (!validateFields()) return;
     try {
         if (installment_checkbox.checked) {
