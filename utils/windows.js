@@ -58,26 +58,10 @@ function createCategoryDetailsWindow(year, category, categoryType) {
         {search: `?year=${year}&categoryId=${category}&categoryType=${categoryType}`})
 }
 
-function createEditCategoriesWindow() {
-    const win = new BrowserWindow({
-        minHeight: 720,
-        minWidth: 1100,
-        webPreferences: {
-            preload: path.join(paths.editCategoriesFolderPath, 'editCategories-preload.js'),
-            nodeIntegration: false,
-            contextIsolation: true,
-            enableRemoteModule: false
-        }
-    })
-    win.webContents.openDevTools()
-    win.loadFile(path.join(paths.editCategoriesFolderPath, 'editCategories.html'))
-}
-
 
 module.exports = {
     createMainWindow,
     createConverterWindow,
     createExpenseEditWindow,
     createCategoryDetailsWindow,
-    createEditCategoriesWindow
 }

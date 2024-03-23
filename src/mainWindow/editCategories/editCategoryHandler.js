@@ -2,7 +2,7 @@ const {ipcMain, app} = require('electron')
 const path = require('path')
 const fs = require('fs')
 const fs_extra = require('fs-extra')
-const paths = require('../../utils/paths')
+const paths = require('../../../utils/paths')
 function editCategoryHandler() {
     ipcMain.handle('update-category', async (event, category) => {
         if(category.type === '') {

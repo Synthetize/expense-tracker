@@ -1,7 +1,12 @@
 const convertButton = document.getElementById('convert-button');
 const openDialogButton = document.getElementById('open-dialog-button');
 convertButton.addEventListener('click', () => {
-    convert().then();
+    convert().then(
+        () => {
+            alert('Conversione completata');
+            window.close()
+        }
+    );
 });
 
 openDialogButton.addEventListener('click', () => {
