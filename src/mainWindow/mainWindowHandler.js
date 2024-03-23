@@ -3,7 +3,7 @@ const path = require('path')
 const fs = require('fs')
 const fs_extra = require('fs-extra')
 const {expensesFolderPath, subjectsFilePath, categoriesFilesPath} = require('../../utils/paths')
-const {createExpenseEditWindow, createCategoryDetailsWindow} = require('../../utils/windows')
+const {createExpenseEditWindow, createCategoryDetailsWindow, createConverterWindow, createEditCategoriesWindow} = require('../../utils/windows')
 
 
 function mainWindowHandler() {
@@ -58,8 +58,12 @@ function mainWindowHandler() {
         createExpenseEditWindow(expense, year)
     })
 
-    ipcMain.on('open-category-expense-details-window', async (event, year, categoryId, categoryType) => {
+    ipcMain.on('open-category-expense-details-window', (event, year, categoryId, categoryType) => {
         createCategoryDetailsWindow(year, categoryId, categoryType)
+    })
+
+    ipcMain.on('open-edit-categories-window', (event) => {
+        createEditCategoriesWindow()
     })
 
 
@@ -92,22 +96,7 @@ function mainWindowHandler() {
     //
 
     //
-    // ipcMain.on('open-edit-categories-window', async (event) => {
-    //     const win = new BrowserWindow({
-    //         height: 750,
-    //         width: 600,
-    //
-    //         resizable: false,
-    //         webPreferences: {
-    //             preload: path.join(__dirname, '..', 'src', 'edit-categories', 'editCategories-preload.js'),
-    //             nodeIntegration: false,
-    //             contextIsolation: true,
-    //             enableRemoteModule: false
-    //         }
-    //     })
-    //     //win.webContents.openDevTools()
-    //     await win.loadFile(path.join(__dirname, '..', 'src', 'edit-categories', 'editCategories.html'))
-    // })
+
     //
     // ipcMain.on('open-expense-edit-window', async (event, expense, year) => {
     //     const win = new BrowserWindow({

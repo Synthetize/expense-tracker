@@ -4,7 +4,7 @@ const {createMainWindow, createConverterWindow} = require('./utils/windows')
 const {mainWindowHandler} = require('./src/mainWindow/mainWindowHandler')
 const {ipcMainConverterHandler} = require('./src/converter/ConverterHandler')
 const {ipcMainCategoryDetailsHandler} = require('./src/categoryDetails/CategoryDetailsHandler')
-const {ipcMainEditCategoryHandler} = require("./src/edit-categories/editCategoryHandler");
+const {ipcMainEditCategoryHandler} = require("./src/editCategories/editCategoryHandler");
 const {editExpenseHandler} = require("./src/editExpense/editExpenseHandler");
 
 const menuItems = [
