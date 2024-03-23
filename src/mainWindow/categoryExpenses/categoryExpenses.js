@@ -5,6 +5,7 @@ const tbody = document.getElementById('table-body');
 const fromDate = document.getElementById('from-date');
 const toDate = document.getElementById('to-date');
 let expensesList = []
+let categoriesList = []
 
 
 function goBack() {
@@ -12,7 +13,6 @@ function goBack() {
 }
 
 window.electron.getYears().then(years => {
-    years = years.sort((a, b) => b - a);
     years.forEach(year => {
         const option = document.createElement('option');
         option.value = year;
@@ -24,13 +24,12 @@ window.electron.getYears().then(years => {
 
 })
 
+window.electron.getCategories().then(categories => {
+    categoriesList = categories;
+})
+
 function getYearExpenses(year) {
     window.electron.getExpensesByYear(year).then(expenses => {
-        expenses.map(expense => {
-
-            let date = expense.date.split('-').reverse().join('-');
-            expense.date = date;
-        })
         expensesList = expenses;
         updateTable();
     })
@@ -54,23 +53,41 @@ async function updateTable() {
         addTableHeader()
         addTotalRow(filteredList)
 
-        const categories = filteredList.map(expense => expense.category);
-        const uniqueCategories = [...new Set(categories)];
+        const uniqueCategories = findUniqueCategoriesAndRelatedIds(filteredList);
 
+        uniqueCategories.sort((a, b) => a.type.localeCompare(b.type));
         for (const category of uniqueCategories) {
             const tr = document.createElement('tr');
             const tdCategory = document.createElement('td');
-            tdCategory.innerText = await window.electron.getCategoryById(category);
+            tdCategory.innerText = category.type;
+
             tr.appendChild(tdCategory);
             const tdSum = document.createElement('td');
-            tdSum.innerText = filteredList.filter(expense => expense.category === category).reduce((acc, expense) => acc + expense.amount, 0).toFixed(2);
+            tdSum.innerText = filteredList.filter(expense => expense.category === category.id).reduce((acc, expense) => acc + expense.amount, 0).toFixed(2);
             tr.appendChild(tdSum);
             tr.addEventListener('click', async () => {
-                window.electron.openCategoryExpenseDetailsWindow(year_select.value, category)
+                window.electron.openCategoryExpenseDetailsWindow(year_select.value, category.id, category.type)
             })
             tbody.appendChild(tr);
         }
     })
+
+}
+
+function findUniqueCategoriesAndRelatedIds(expenses) {
+    const categories = expenses.map(expense => expense.category);
+    let uniqueCategories = [...new Set(categories)];
+    uniqueCategories = uniqueCategories.map(categoryId => {
+        return categoriesList.find(cat => {
+            if(cat.id === categoryId) {
+                return {
+                    id: cat.id,
+                    type: cat.type
+                }
+            }
+        })
+    })
+    return uniqueCategories;
 
 }
 

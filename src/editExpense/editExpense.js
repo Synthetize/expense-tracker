@@ -58,7 +58,7 @@ function validateInput() {
 
 saveButton.addEventListener('click', async () => {
     let newExpense = {
-        id: expense.id,
+        id: parseInt(expense.id),
         subject: subjectsSelect.options[subjectsSelect.selectedIndex].text,
         date: expense_date.value,
         category: categorySelect.options[categorySelect.selectedIndex].value,

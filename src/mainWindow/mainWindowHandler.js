@@ -3,7 +3,7 @@ const path = require('path')
 const fs = require('fs')
 const fs_extra = require('fs-extra')
 const {expensesFolderPath, subjectsFilePath, categoriesFilesPath} = require('../../utils/paths')
-const {createExpenseEditWindow} = require('../../utils/windows')
+const {createExpenseEditWindow, createCategoryDetailsWindow} = require('../../utils/windows')
 
 
 function mainWindowHandler() {
@@ -14,7 +14,7 @@ function mainWindowHandler() {
             let year = file.match(/\d+/)[0]
             if (!years.includes(year)) years.push(year)
         })
-        return years.reverse()
+        return years.sort((a, b) => b - a)
     })
 
     ipcMain.handle('get-subjects', async () => {
@@ -58,6 +58,10 @@ function mainWindowHandler() {
         createExpenseEditWindow(expense, year)
     })
 
+    ipcMain.on('open-category-expense-details-window', async (event, year, categoryId, categoryType) => {
+        createCategoryDetailsWindow(year, categoryId, categoryType)
+    })
+
 
     // ipcMain.handle('get-expenses-by-year', async (event, year) => {
     //     const directory = path.join(filesPath, 'expenses', `SPESE${year}.json`)
@@ -86,20 +90,7 @@ function mainWindowHandler() {
     //     }
     // })
     //
-    // ipcMain.on('open-category-expense-details-window', async (event, year, category) => {
-    //     const win = new BrowserWindow({
-    //         minHeight: 720,
-    //         minWidth: 1100,
-    //         webPreferences: {
-    //             preload: path.join(__dirname, '..', 'src', 'category-details', 'category-details-preload.js'),
-    //             nodeIntegration: false,
-    //             contextIsolation: true,
-    //             enableRemoteModule: false
-    //         }
-    //     })
-    //     win.webContents.openDevTools()
-    //     await win.loadFile(path.join(__dirname, '..', 'src', 'category-details', 'category-details.html'), {search: `?year=${year}&category=${category}`})
-    // })
+
     //
     // ipcMain.on('open-edit-categories-window', async (event) => {
     //     const win = new BrowserWindow({

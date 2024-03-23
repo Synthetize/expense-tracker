@@ -41,9 +41,26 @@ const createExpenseEditWindow = (expense, year) => {
         {search: `?year=${year}&expense=${JSON.stringify(expense)}`})
 }
 
+function createCategoryDetailsWindow(year, category, categoryType) {
+    const win = new BrowserWindow({
+        minHeight: 720,
+        minWidth: 1100,
+        webPreferences: {
+            preload: path.join(paths.categoryDetailsFolderPath, 'categoryDetails-preload.js'),
+            nodeIntegration: false,
+            contextIsolation: true,
+            enableRemoteModule: false
+        }
+    })
+    win.webContents.openDevTools()
+    win.loadFile(path.join(paths.categoryDetailsFolderPath, 'categoryDetails.html'),
+        {search: `?year=${year}&categoryId=${category}&categoryType=${categoryType}`})
+}
+
 
 module.exports = {
     createMainWindow,
     createConverterWindow,
-    createExpenseEditWindow
+    createExpenseEditWindow,
+    createCategoryDetailsWindow
 }
