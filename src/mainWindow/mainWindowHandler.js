@@ -61,59 +61,6 @@ function mainWindowHandler() {
     ipcMain.on('open-category-expense-details-window', (event, year, categoryId, categoryType) => {
         createCategoryDetailsWindow(year, categoryId, categoryType)
     })
-
-    ipcMain.on('open-edit-categories-window', (event) => {
-        createEditCategoriesWindow()
-    })
-
-
-    // ipcMain.handle('get-expenses-by-year', async (event, year) => {
-    //     const directory = path.join(filesPath, 'expenses', `SPESE${year}.json`)
-    //     try {
-    //         return await fs_extra.readJson(directory)
-    //     } catch (error) {
-    //         console.error(error)
-    //     }
-    // })
-    //
-    // ipcMain.handle('get-category-by-id', async (event, id) => {
-    //     const categories = await fs_extra.readJson(path.join(filesPath, 'categories.json'))
-    //     for (let category of categories) {
-    //         if (category.id === id) {
-    //             return category.type
-    //         }
-    //     }
-    // })
-    //
-    // ipcMain.handle('get-category-id-by-type', async (event, type) => {
-    //     const categories = await fs_extra.readJson(path.join(filesPath, 'categories.json'))
-    //     for (let category of categories) {
-    //         if (category.type === type) {
-    //             return category.id
-    //         }
-    //     }
-    // })
-    //
-
-    //
-
-    //
-    // ipcMain.on('open-expense-edit-window', async (event, expense, year) => {
-    //     const win = new BrowserWindow({
-    //         height: 510,
-    //         width: 900,
-    //         resizable: false,
-    //         webPreferences: {
-    //             preload: path.join(__dirname, '..', 'src', 'edit-expense', 'editExpense-preload.js'),
-    //             nodeIntegration: false,
-    //             contextIsolation: true,
-    //             enableRemoteModule: false
-    //         }
-    //     })
-    //     //win.webContents.openDevTools()
-    //     await win.loadFile(path.join(__dirname, '..', 'src', 'edit-expense', 'editExpense.html'), {search: `?expense=${JSON.stringify(expense)}&year=${year}`})
-    // })
-
 }
 
 module.exports = {mainWindowHandler}
