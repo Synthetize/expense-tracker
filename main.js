@@ -2,9 +2,9 @@ const {app, BrowserWindow, Menu} = require('electron')
 
 const {createMainWindow, createConverterWindow} = require('./utils/windows')
 const {mainWindowHandler} = require('./src/mainWindow/mainWindowHandler')
-const {ipcMainConverterHandler, converterHandler} = require('./src/converter/ConverterHandler')
-const {ipcMainCategoryDetailsHandler, categoryDetailsHandler} = require('./src/categoryDetails/CategoryDetailsHandler')
-const {ipcMainEditCategoryHandler, editCategoryHandler} = require("./src/mainWindow/editCategories/editCategoryHandler");
+const {converterHandler} = require('./src/converter/ConverterHandler')
+const {categoryDetailsHandler} = require('./src/categoryDetails/CategoryDetailsHandler')
+const {editCategoryHandler} = require("./src/mainWindow/editCategories/editCategoryHandler");
 const {editExpenseHandler} = require("./src/editExpense/editExpenseHandler");
 
 const menuItems = [

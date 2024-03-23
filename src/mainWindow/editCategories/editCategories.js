@@ -18,11 +18,11 @@ window.electron.getCategories().then(categories => {
     input_category.value = categories_select.options[categories_select.selectedIndex].text;
 })
 
-categories_select.addEventListener('change', (event) => {
+categories_select.addEventListener('change', () => {
     input_category.value = categories_select.options[categories_select.selectedIndex].text;
 })
 
-confirm_button.addEventListener('click', async (event) => {
+confirm_button.addEventListener('click', async () => {
     const category = {
         id: parseInt(categories_select.value),
         type: input_category.value
@@ -45,7 +45,7 @@ addCategoryButton.addEventListener('click', (event) => {
     addCategory(event);
 });
 
-function addCategory(event) {
+function addCategory() {
     const input = document.getElementById('category-name');
     window.electron.addNewCategory(input.value).then(result => {
         if(!result.success) {

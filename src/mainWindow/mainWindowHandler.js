@@ -1,9 +1,9 @@
-const {ipcMain, BrowserWindow, app} = require('electron')
+const {ipcMain} = require('electron')
 const path = require('path')
 const fs = require('fs')
 const fs_extra = require('fs-extra')
 const {expensesFolderPath, subjectsFilePath, categoriesFilesPath} = require('../../utils/paths')
-const {createExpenseEditWindow, createCategoryDetailsWindow, createConverterWindow, createEditCategoriesWindow} = require('../../utils/windows')
+const {createExpenseEditWindow, createCategoryDetailsWindow} = require('../../utils/windows')
 
 
 function mainWindowHandler() {

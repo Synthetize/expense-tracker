@@ -1,7 +1,6 @@
-const {ipcMain, app} = require('electron')
+const {ipcMain} = require('electron')
 const path = require('path')
 const fs_extra = require('fs-extra')
-const fs = require("fs");
 const paths = require('../../utils/paths')
 function categoryDetailsHandler() {
     ipcMain.handle('get-category-details-by-year', (event, year, categoryId) => {

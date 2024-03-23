@@ -1,6 +1,4 @@
-const {ipcMain, app} = require('electron')
-const path = require('path')
-const fs = require('fs')
+const {ipcMain} = require('electron')
 const fs_extra = require('fs-extra')
 const paths = require('../../../utils/paths')
 function editCategoryHandler() {

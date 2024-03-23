@@ -1,4 +1,4 @@
-const {ipcMain, dialog, app} = require('electron')
+const {ipcMain, dialog} = require('electron')
 const path = require('path')
 const fs = require('fs')
 const fs_extra = require('fs-extra')
