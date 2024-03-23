@@ -9,6 +9,7 @@ window.electron.getCategoryDetailsByYear(year, categoryId).then(async expenses =
     table_body.innerHTML = '';
     for (const expense of expenses) {
         expense.category = categoryType;
+        expense.date = expense.date.split('-').reverse().join('-');
         let row = document.createElement('tr');
         Object.keys(expense).forEach(key => {
             const cell = document.createElement('td');

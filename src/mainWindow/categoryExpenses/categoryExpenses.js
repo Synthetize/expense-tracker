@@ -97,7 +97,7 @@ function addTableHeader() {
     thCategory.innerText = 'Categoria';
     tr.appendChild(thCategory);
     const thSum = document.createElement('th');
-    thSum.innerText = 'Somma';
+    thSum.innerText = 'Totale';
     tr.appendChild(thSum);
     thead.appendChild(tr);
 }
@@ -122,6 +122,5 @@ async function applyFilters(list) {
     if (toDate.value !== '') {
         filteredList = filteredList.filter(expense => new Date(expense.date) <= new Date(toDate.value));
     }
-
     return filteredList;
 }
