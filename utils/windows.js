@@ -13,6 +13,7 @@ const createMainWindow = () => {
     })
     win.webContents.openDevTools()
     win.loadFile(path.join(paths.mainWindowPath, 'index', 'index.html'))
+    return win
 }
 
 const createConverterWindow = () => {

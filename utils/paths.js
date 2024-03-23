@@ -14,7 +14,7 @@ module.exports = {
     mainWindowPath: path.join(__dirname, '..', 'src', 'mainWindow'),
     converterPath: path.join(__dirname, '..', 'src', 'converter'),
     expensesFolderPath: path.join(getFilesFolderPath(), 'expenses'),
-    oldFilesFolderPath: path.join(getFilesFolderPath(), 'oldFiles'),
+    oldFilesFolderPath: path.join(getFilesFolderPath(), 'old_files'),
     subjectsFilePath: path.join(getFilesFolderPath(), 'subjects.json'),
     categoriesFilesPath: path.join(getFilesFolderPath(), 'categories.json'),
     editExpenseFolderPath: path.join(__dirname, '..', 'src', 'editExpense'),

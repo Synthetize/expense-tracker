@@ -15,4 +15,4 @@ function categoryDetailsHandler() {
     })
 }
 
-module.exports = {ipcMainCategoryDetailsHandler: categoryDetailsHandler}
+module.exports = {categoryDetailsHandler}

@@ -2,9 +2,9 @@ const {app, BrowserWindow, Menu} = require('electron')
 
 const {createMainWindow, createConverterWindow} = require('./utils/windows')
 const {mainWindowHandler} = require('./src/mainWindow/mainWindowHandler')
-const {ipcMainConverterHandler} = require('./src/converter/ConverterHandler')
-const {ipcMainCategoryDetailsHandler} = require('./src/categoryDetails/CategoryDetailsHandler')
-const {ipcMainEditCategoryHandler} = require("./src/editCategories/editCategoryHandler");
+const {ipcMainConverterHandler, converterHandler} = require('./src/converter/ConverterHandler')
+const {ipcMainCategoryDetailsHandler, categoryDetailsHandler} = require('./src/categoryDetails/CategoryDetailsHandler')
+const {ipcMainEditCategoryHandler, editCategoryHandler} = require("./src/editCategories/editCategoryHandler");
 const {editExpenseHandler} = require("./src/editExpense/editExpenseHandler");
 
 const menuItems = [
@@ -36,9 +36,19 @@ const menu = Menu.buildFromTemplate(menuItems)
 Menu.setApplicationMenu(menu)
 
 app.whenReady().then(() => {
-    createMainWindow()
+    const mainWindow = createMainWindow()
+
+    mainWindow.on('closed', () => {
+        const allWindows = BrowserWindow.getAllWindows()
+        allWindows.forEach(win => {
+            if (win !== mainWindow) {
+                win.close()
+            }
+        })
+    })
+
     app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) createWindow()
+        if (BrowserWindow.getAllWindows().length === 0) createMainWindow()
     })
 })
 
@@ -47,11 +57,9 @@ app.on('window-all-closed', () => {
 })
 
 mainWindowHandler()
-
-
-ipcMainConverterHandler()
-ipcMainCategoryDetailsHandler()
-ipcMainEditCategoryHandler()
+converterHandler()
+categoryDetailsHandler()
+editCategoryHandler()
 editExpenseHandler()
 
 

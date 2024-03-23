@@ -39,4 +39,4 @@ function editCategoryHandler() {
     })
 }
 
-module.exports = {ipcMainEditCategoryHandler: editCategoryHandler}
+module.exports = {editCategoryHandler}
