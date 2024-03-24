@@ -1,7 +1,7 @@
 const table = document.getElementById('comparison-table');
 const table_head = document.getElementById('table-head');
 const table_body = document.getElementById('table-body');
-const spinner = document.getElementById('spinner');
+const order_select = document.getElementById('order-select');
 let categoriesList = []
 let yearsList = []
 let yearsExpenses = []
@@ -31,16 +31,24 @@ function goBack() {
 }
 
 
+
 fetchData().then(() => {
     yearsList = yearsList.slice(0, 7);
-    categoriesList = categoriesList.sort((a, b) => a.id - b.id);
+    createTable();
+})
+
+order_select.addEventListener('change', () => {
     createTable();
 
 })
 
 
-
-
+function orderBy() {
+    if(order_select.value === 'alphabetical') {
+        return categoriesList.sort((a, b) => a.type.localeCompare(b.type));
+    }
+    return categoriesList.sort((a, b) => a.id - b.id);
+}
 
 
 
@@ -48,14 +56,11 @@ function createTable() {
     table_head.innerHTML = '';
     table_body.innerHTML = '';
 
+    categoriesList = orderBy()
     createTableHeader();
     createTotalRow();
     createCategoryRows();
 
-    // for (let year of yearsList) {
-    //
-    //     createCategoryRows(year);
-    // }
 }
 
 function createTableHeader() {
