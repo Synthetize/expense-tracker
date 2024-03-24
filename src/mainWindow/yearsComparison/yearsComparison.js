@@ -33,7 +33,7 @@ function goBack() {
 
 
 fetchData().then(() => {
-    yearsList = yearsList.slice(0, 7);
+    yearsList = yearsList
     createTable();
 })
 
