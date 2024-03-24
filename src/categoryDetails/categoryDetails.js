@@ -14,6 +14,7 @@ window.electron.getCategoryDetailsByYear(year, categoryId).then(async expenses =
         Object.keys(expense).forEach(key => {
             const cell = document.createElement('td');
             cell.innerText = expense[key];
+            row.style.textAlign = 'right';
             row.appendChild(cell);
         })
         table_body.appendChild(row);
