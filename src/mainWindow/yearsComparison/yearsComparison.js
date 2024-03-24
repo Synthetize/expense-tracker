@@ -33,7 +33,6 @@ function goBack() {
 
 
 fetchData().then(() => {
-    yearsList = yearsList
     createTable();
 })
 
@@ -96,7 +95,7 @@ function createTotalRow() {
     table_body.appendChild(totalRow);
 }
 
-function createCategoryRows(year) {
+function createCategoryRows() {
     for (let category of categoriesList) {
         let row = document.createElement('tr');
         let td = document.createElement('td');
