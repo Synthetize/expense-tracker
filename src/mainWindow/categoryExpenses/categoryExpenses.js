@@ -4,6 +4,8 @@ const thead = document.getElementById('table-head');
 const tbody = document.getElementById('table-body');
 const fromDate = document.getElementById('from-date');
 const toDate = document.getElementById('to-date');
+const order_select = document.getElementById('order-select');
+
 let expensesList = []
 let categoriesList = []
 
@@ -35,6 +37,10 @@ function getYearExpenses(year) {
     })
 }
 
+order_select.addEventListener('change', () => {
+    updateTable();
+})
+
 year_select.addEventListener('change', (event) => {
     toDate.value = '';
     fromDate.value = '';
@@ -48,16 +54,23 @@ elements.forEach(element => {
     })
 })
 
+function orderBy(uniqueCategories) {
+    console.log(order_select.value)
+    if(order_select.value === 'alphabetical') {
+        return uniqueCategories.sort((a, b) => a.type.localeCompare(b.type));
+    }
+    return uniqueCategories.sort((a, b) => a.id - b.id);
+
+}
+
 function updateTable() {
     tbody.innerHTML = '';
     thead.innerHTML = '';
     applyFilters(expensesList).then(async filteredList => {
         addTableHeader()
         addTotalRow(filteredList)
-
-        const uniqueCategories = findUniqueCategoriesAndRelatedIds(filteredList);
-
-        uniqueCategories.sort((a, b) => a.type.localeCompare(b.type));
+        let uniqueCategories = findUniqueCategoriesAndRelatedIds(filteredList);
+        uniqueCategories = orderBy(uniqueCategories);
         for (const category of uniqueCategories) {
             const tr = document.createElement('tr');
             const tdCategory = document.createElement('td');

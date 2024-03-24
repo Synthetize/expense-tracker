@@ -4,7 +4,6 @@ const {createMainWindow, createConverterWindow} = require('./utils/windows')
 const {mainWindowHandler} = require('./src/mainWindow/mainWindowHandler')
 const {converterHandler} = require('./src/converter/ConverterHandler')
 const {categoryDetailsHandler} = require('./src/categoryDetails/CategoryDetailsHandler')
-const {editCategoryHandler} = require("./src/mainWindow/editCategories/editCategoryHandler");
 const {editExpenseHandler} = require("./src/editExpense/editExpenseHandler");
 
 const menuItems = [
@@ -59,7 +58,6 @@ app.on('window-all-closed', () => {
 mainWindowHandler()
 converterHandler()
 categoryDetailsHandler()
-editCategoryHandler()
 editExpenseHandler()
 
 
