@@ -37,7 +37,7 @@ const createExpenseEditWindow = (expense, year) => {
             preload: path.join(paths.editExpenseFolderPath, 'editExpense-preload.js')
         }
     })
-    win.webContents.openDevTools()
+    //win.webContents.openDevTools()
     win.loadFile(path.join(paths.editExpenseFolderPath, 'editExpense.html'),
         {search: `?year=${year}&expense=${JSON.stringify(expense)}`})
 }
@@ -53,7 +53,7 @@ function createCategoryDetailsWindow(year, category, categoryType) {
             enableRemoteModule: false
         }
     })
-    win.webContents.openDevTools()
+    //win.webContents.openDevTools()
     win.loadFile(path.join(paths.categoryDetailsFolderPath, 'categoryDetails.html'),
         {search: `?year=${year}&categoryId=${category}&categoryType=${categoryType}`})
 }

@@ -7,6 +7,12 @@ const addCategoryButton = document.getElementById('add-category-button');
 
 
 error_alert.style.display = 'none';
+
+function goBack() {
+    window.history.back();
+}
+
+
 window.electron.getCategories().then(categories => {
     categories = categories.sort((a, b) => a.type.localeCompare(b.type));
     categories.forEach(category => {

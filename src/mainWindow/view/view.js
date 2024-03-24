@@ -1,21 +1,38 @@
 let data = null
 const yearSelect = document.getElementById('year-options');
+const categorySelect = document.getElementById('categories-select');
 const fromDate = document.getElementById('from-date');
 const toDate = document.getElementById('to-date');
 const radioForm = document.getElementById('radio-form');
 const tbody = document.getElementById('table-body');
 
-
-const dropdown = document.getElementById('dropdown-menu');
 let expensesList = []
 let categoriesList = []
+let yearsList = []
 
 
 function goBack() {
     window.history.back();
 }
 
-window.electron.getYears().then(async years => {
+
+async function fetchData() {
+    yearsList = await window.electron.getYears()
+    categoriesList = await window.electron.getCategories()
+    expensesList = await window.electron.getExpensesByYear(yearsList[0])
+}
+
+fetchData().then(() => {
+    categoriesList = categoriesList.sort((a, b) => a.type.localeCompare(b.type));
+    populateYearsSelect(yearsList);
+    const uniqueCategories = findUniqueCategoriesAndRelatedIds(expensesList)
+    console.log(uniqueCategories)
+    populateCategoriesSelect(uniqueCategories);
+    applyFilter();
+})
+
+
+function populateYearsSelect(years) {
     years.forEach(year => {
         const option = document.createElement('option');
         option.value = year;
@@ -24,16 +41,36 @@ window.electron.getYears().then(async years => {
     });
     yearSelect.selectedIndex = yearSelect.options[0].index;
     yearSelect.value = yearSelect.options[yearSelect.selectedIndex].value;
-    expensesList = await window.electron.getExpensesByYear(yearSelect.value);
-    applyFilter();
+}
 
-});
+function findUniqueCategoriesAndRelatedIds(expenses) {
+    const categories = expenses.map(expense => expense.category);
+    let uniqueCategories = [...new Set(categories)];
+    uniqueCategories = uniqueCategories.map(categoryId => {
+        return categoriesList.find(cat => {
+            if (cat.id === categoryId) {
+                return {
+                    id: parseInt(cat.id),
+                    type: cat.type
+                }
+            }
+        })
+    })
+    return uniqueCategories.sort((a, b) => a.type.localeCompare(b.type));
+}
 
-window.electron.getCategories().then(categories => {
-    categoriesList = categories.sort((a, b) => a.type.localeCompare(b.type));
-})
-
-
+function populateCategoriesSelect(categories) {
+    const option = document.createElement('option');
+    option.value = 'all';
+    option.innerText = 'Tutte';
+    categorySelect.appendChild(option);
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id;
+        option.innerText = category.type;
+        categorySelect.appendChild(option);
+    });
+}
 
 const firstRadioButton = document.querySelector('#radio-form input[type="radio"]:first-child');
 firstRadioButton.checked = true;
@@ -41,71 +78,36 @@ radioForm.value = firstRadioButton.value;
 
 yearSelect.addEventListener('change', async () => {
     expensesList = await window.electron.getExpensesByYear(yearSelect.value);
+    categorySelect.innerHTML = '';
+    toDate.value = '';
+    fromDate.value = '';
+    populateCategoriesSelect(findUniqueCategoriesAndRelatedIds(expensesList));
     applyFilter();
 });
 
-const elements = [toDate, fromDate, radioForm, dropdown];
+const elements = [toDate, fromDate, radioForm, categorySelect];
 elements.forEach(element => {
     element.addEventListener('change', applyFilter);
 });
 
-
-// window.electron.getCategories().then(categories => {
-//     categories.sort((a, b) => a.type.localeCompare(b.type));
-//     categories.forEach(category => {
-//         const li = document.createElement('li');
-//         li.className = 'dropdown-item';
-//         li.innerHTML = `<a class="dropdown-item" href="#">
-//                                     <div class="form-check">
-//                                         <input class="form-check-input" type="checkbox" value="" id="${category.type}"/>
-//                                         <label class="form-check-label" for="${category.type}">${category.type}</label>
-//                                     </div>
-//                                 </a>`;
-//         li.addEventListener('click', event => {
-//             //prevents the dropdown from closing after clicking on a checkbox label
-//             event.stopPropagation();
-//             //if clicked on a checkbox label, toggle the checkbox
-//             const checkbox = document.getElementById(category.type);
-//             checkbox.checked = !checkbox.checked;
-//         })
-//         dropdown.appendChild(li);
-//     })
-// })
-
-// function resetSelectedCheckBoxes() {
-//     const checkboxes = document.querySelectorAll('.dropdown-item input[type="checkbox"]');
-//     checkboxes.forEach(checkbox => {
-//         checkbox.checked = false;
-//     });
-//     applyFilter()
-// }
-
-
 function applyFilter() {
     let filteredExpenses = [...expensesList];
-    //const selectedCategories = getSelectedCategories()
-    //filteredExpenses = filterBySelectedCategories(filteredExpenses, selectedCategories);
+    filteredExpenses = filterByCategory(filteredExpenses);
     filteredExpenses = filterByDate(filteredExpenses);
     sortBy(filteredExpenses);
     updateTable(filteredExpenses);
 }
 
+function filterByCategory(expenses) {
+    const selectedCategory = categorySelect.value;
+    if (selectedCategory !== 'all') {
+        expenses = expenses.filter(expense => {
+            return expense.category === parseInt(selectedCategory);
+        });
+    }
+    return expenses;
 
-// function getSelectedCategories() {
-//     let tempSelectedCategories = [];
-//     const checkboxes = document.querySelectorAll('.dropdown-item input[type="checkbox"]:checked');
-//     checkboxes.forEach(checkbox => {
-//         tempSelectedCategories.push(checkbox.id);
-//     })
-//     return tempSelectedCategories;
-// }
-//
-// function filterBySelectedCategories(expenses, selectedCategories) {
-//     if (selectedCategories.length > 0) {
-//         expenses = expenses.filter(expense => selectedCategories.includes(expense.category));
-//     }
-//     return expenses;
-// }
+}
 
 function filterByDate(expenses) {
     if (fromDate.value !== '') {
@@ -169,6 +171,15 @@ function updateTable(expenses) {
     expenses = changeFormat(expenses);
     createTotalRow(expenses)
 
+
+    function breakStringIntoChunks(str, chunkSize) {
+        let chunks = [];
+        for (let i = 0; i < str.length; i += chunkSize) {
+            chunks.push(str.slice(i, i + chunkSize));
+        }
+        return chunks.join('\n');
+    }
+
     //aggiungi le spese nella tabella
     expenses.forEach(expense => {
         const row = document.createElement('tr');
@@ -177,7 +188,17 @@ function updateTable(expenses) {
             cell.addEventListener('click', () => {
                 window.electron.openExpenseEditWindow(expense, yearSelect.value);
             })
-            cell.innerText = expense[key];
+
+            if (key === 'amount') {
+                cell.innerText = expense[key] + ' €';
+                cell.style.textAlign = 'right';
+            } else if (key === 'description') {
+                cell.innerText = breakStringIntoChunks(expense[key], 70);
+                cell.style.textAlign = 'center';
+            } else {
+                cell.style.textAlign = 'center';
+                cell.innerText = expense[key];
+            }
             row.appendChild(cell);
         })
         document.getElementById('table-body').appendChild(row);
@@ -204,6 +225,7 @@ function createTotalRow(expenses) {
     let totalSum = expenses.reduce((total, expense) => total + expense.amount, 0).toFixed(2);
     totalCell.innerText = `Totale: ${totalSum} €`;
     totalCell.colSpan = 6;
+    totalRow.style.fontWeight = 'bold';
     totalRow.appendChild(totalCell);
     tbody.appendChild(totalRow);
 }

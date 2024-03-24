@@ -36,6 +36,8 @@ function getYearExpenses(year) {
 }
 
 year_select.addEventListener('change', (event) => {
+    toDate.value = '';
+    fromDate.value = '';
     getYearExpenses(event.target.value)
 })
 
@@ -46,7 +48,7 @@ elements.forEach(element => {
     })
 })
 
-async function updateTable() {
+function updateTable() {
     tbody.innerHTML = '';
     thead.innerHTML = '';
     applyFilters(expensesList).then(async filteredList => {
@@ -64,6 +66,7 @@ async function updateTable() {
             tr.appendChild(tdCategory);
             const tdSum = document.createElement('td');
             tdSum.innerText = filteredList.filter(expense => expense.category === category.id).reduce((acc, expense) => acc + expense.amount, 0).toFixed(2);
+            tdSum.style.textAlign = 'right';
             tr.appendChild(tdSum);
             tr.addEventListener('click', async () => {
                 window.electron.openCategoryExpenseDetailsWindow(year_select.value, category.id, category.type)
@@ -109,6 +112,8 @@ function addTotalRow(list) {
     const totalValue = document.createElement('td');
     totalCell.innerText = `Totale:`;
     totalValue.innerText = `${totalAmount}`;
+    totalValue.style.textAlign = 'right';
+    totalRow.style.fontWeight = 'bold';
     totalRow.appendChild(totalCell);
     totalRow.appendChild(totalValue);
     tbody.appendChild(totalRow);

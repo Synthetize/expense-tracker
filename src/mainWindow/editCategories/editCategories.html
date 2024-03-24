@@ -11,8 +11,15 @@
 </head>
 <body>
 <div class="container vh-100 d-flex align-items-center justify-content-center">
-    <div class="row align-items-center col-md-12">
-        <h1 class="mb-3 ">Aggiungi categoria</h1>
+    <div class="row align-items-center col-md-6">
+        <div class="col-md-1" style="padding: 0">
+            <button class="btn btn-primary " id="compare-button" onclick="goBack()">Back</button>
+        </div>
+        <div class="col-md-11">
+            <h1 class="text-center my-4 " style="margin-right: 10%">Dettagli categorie</h1>
+        </div>
+
+        <h3 class="mb-3" style="padding: 0">Aggiungi categoria</h3>
         <div class="mb-3 col-md-9" style="padding: 0">
             <input class="form-control form-control-lg mb-3" type="text" placeholder="Nuova categoria"
                    aria-label=".form-control-lg example" id="category-name">
@@ -21,7 +28,7 @@
             <button class="btn btn-primary btn-lg mb-3 w-100" type="button" id="add-category-button">Aggiungi
             </button>
         </div>
-        <h1 class="mb-3">Modifica categorie</h1>
+        <h3 class="mb-3" style="padding: 0">Modifica categorie</h3>
         <label for="categories-select" class="form-label"><strong>Seleziona categoria</strong></label>
         <select class="form-select form-select-lg mb-3" aria-label="Large select example" id="categories-select">
         </select>

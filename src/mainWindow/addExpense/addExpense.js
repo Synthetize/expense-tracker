@@ -8,8 +8,6 @@ const confirmAlert = document.getElementById('confirm-alert');
 const errorAlert = document.getElementById('error-alert');
 
 
-
-
 errorAlert.style.display = 'none';
 confirmAlert.style.display = 'none';
 installment_number.disabled = true;
@@ -54,6 +52,15 @@ function displayErrorAlert(message) {
     }, 3000);
 }
 
+function displaySuccessAlert(message) {
+    confirmAlert.style.display = 'block';
+    confirmAlert.innerText = message;
+    setTimeout(() => {
+        confirmAlert.style.display = 'none';
+    }, 3000);
+}
+
+
 function goBack() {
     window.history.back();
 }
@@ -63,10 +70,9 @@ function validateFields() {
     const date = document.getElementById('expense-date').value;
     const category = document.getElementById('expense-category').value;
     const amount = parseFloat(document.getElementById('expense-amount').value);
-    const description = document.getElementById('expense-description').value;
     const installmentNumber = installment_checkbox.checked ? parseInt(installment_number.value) : null;
 
-    if (!subject || !date || !category || isNaN(amount) || !description) {
+    if (!subject || !date || !category || isNaN(amount)) {
         displayErrorAlert('Campi obbligatori non compilati o valori non validi');
         return false;
     } else if (installment_checkbox.checked && (isNaN(installmentNumber) || installmentNumber < 2)) {
@@ -77,7 +83,7 @@ function validateFields() {
 }
 
 submitButton.addEventListener('click', async (event) => {
-     localStorage.setItem('lastSelectedCategory', select_categories.value);
+    localStorage.setItem('lastSelectedCategory', select_categories.value);
     if (!validateFields()) return;
     try {
         if (installment_checkbox.checked) {
@@ -88,6 +94,11 @@ submitButton.addEventListener('click', async (event) => {
     } catch (error) {
         console.error('Failed to create expense:', error);
         displayErrorAlert('Errore durante la creazione della spesa');
+    } finally {
+        document.getElementById('expense-date').value = '';
+        document.getElementById('expense-amount').value = '';
+        document.getElementById('expense-description').value = '';
+        installment_checkbox.checked = false;
     }
 })
 
@@ -105,7 +116,7 @@ async function createExpense() {
     }
     expenses.push(expense);
     await window.electron.saveExpensesByYear(year, expenses);
-    confirmAlert.style.display = 'block';
+    displaySuccessAlert('Spesa creata con successo');
 }
 
 
@@ -139,5 +150,5 @@ async function createInstallment() {
 
         date.setMonth(date.getMonth() + 1);
     }
-    confirmAlert.style.display = 'block';
+    displaySuccessAlert('Rate create con successo');
 }

@@ -61,7 +61,7 @@ saveButton.addEventListener('click', async () => {
         id: parseInt(expense.id),
         subject: subjectsSelect.options[subjectsSelect.selectedIndex].text,
         date: expense_date.value,
-        category: categorySelect.options[categorySelect.selectedIndex].value,
+        category: parseInt(categorySelect.options[categorySelect.selectedIndex].value),
         amount: parseFloat(expense_amount.value),
         description: expense_description.value
     }
