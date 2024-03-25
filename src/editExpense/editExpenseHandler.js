@@ -20,6 +20,7 @@ function editExpenseHandler () {
 
         // Scrivi di nuovo il file JSON
         await fs_extra.writeJson(filePath, expenses, {spaces: 2})
+        event.sender.send('expense-updated', expense)
     })
 
 
@@ -38,6 +39,7 @@ function editExpenseHandler () {
 
         // Scrivi di nuovo il file JSON
         await fs_extra.writeJson(filePath, expenses, {spaces: 2})
+        event.sender.send('expense-deleted', expenseId)
     })
 
 }

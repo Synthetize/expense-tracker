@@ -20,5 +20,11 @@ contextBridge.exposeInMainWorld('electron', {
     openCategoryExpenseDetailsWindow: (year, categoryId, categoryType) => ipcRenderer.send('open-category-expense-details-window', year, categoryId, categoryType),
     updateCategory: (category) => ipcRenderer.invoke('update-category', category),
     addNewCategory: (categoryName) => ipcRenderer.invoke('add-new-category', categoryName),
+    refreshOnExpenseEdit: () => ipcRenderer.on('expense-updated', () => {
+        window.location.reload();
+    }),
+    refreshOnExpenseDelete: () => ipcRenderer.on('expense-deleted', () => {
+        window.location.reload();
+    })
 })
 

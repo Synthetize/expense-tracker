@@ -15,6 +15,9 @@ function goBack() {
     window.history.back();
 }
 
+window.electron.refreshOnExpenseEdit()
+window.electron.refreshOnExpenseDelete()
+
 
 async function fetchData() {
     yearsList = await window.electron.getYears()
@@ -26,7 +29,6 @@ fetchData().then(() => {
     categoriesList = categoriesList.sort((a, b) => a.type.localeCompare(b.type));
     populateYearsSelect(yearsList);
     const uniqueCategories = findUniqueCategoriesAndRelatedIds(expensesList)
-    console.log(uniqueCategories)
     populateCategoriesSelect(uniqueCategories);
     applyFilter();
 })
@@ -196,7 +198,7 @@ function updateTable(expenses) {
                 cell.innerText = breakStringIntoChunks(expense[key], 70);
                 cell.style.textAlign = 'left';
             } else {
-                cell.style.textAlign = 'right';
+                cell.style.textAlign = 'left';
                 cell.innerText = expense[key];
             }
             row.appendChild(cell);
