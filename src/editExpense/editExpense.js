@@ -10,6 +10,7 @@ const expense_description = document.getElementById('expense-description')
 const expense_id = document.getElementById('expense-id')
 const saveButton = document.getElementById('submit')
 const errorAlert = document.getElementById('error-alert')
+const deleteButton = document.getElementById('delete')
 
 
 window.electron.getCategories().then(categories => {
@@ -55,6 +56,23 @@ function validateInput() {
             throw new Error('La data deve essere compresa nell\'anno' + year)
     }
 }
+
+deleteButton.addEventListener('click', async () => {
+    try {
+        const confirm = window.confirm('Sei sicuro di voler eliminare questa spesa?')
+        if (!confirm) return
+        await window.electron.deleteExpense(expense.id, year)
+        window.close()
+    } catch (error) {
+        errorAlert.style.display = 'block'
+        errorAlert.textContent = error.message
+        setTimeout(() => {
+            errorAlert.style.display = 'none'
+        }, 3000)
+
+    }
+})
+
 
 saveButton.addEventListener('click', async () => {
     let newExpense = {

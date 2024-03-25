@@ -22,6 +22,24 @@ function editExpenseHandler () {
         await fs_extra.writeJson(filePath, expenses, {spaces: 2})
     })
 
+
+    ipcMain.handle('delete-expense', async (event, expenseId, year) => {
+        const filePath = path.join(paths.expensesFolderPath, `SPESE${parseInt(year)}.json`)
+        let expenses = await fs_extra.readJson(filePath)
+
+        // Trova l'indice della spesa che si desidera eliminare
+        const index = expenses.findIndex(exp => exp.id === parseInt(expenseId));
+
+        // Se la spesa esiste, elimina la spesa
+        if (index !== -1) {
+            console.log('Eliminazione spesa')
+            expenses.splice(index, 1);
+        }
+
+        // Scrivi di nuovo il file JSON
+        await fs_extra.writeJson(filePath, expenses, {spaces: 2})
+    })
+
 }
 
 module.exports = {editExpenseHandler}

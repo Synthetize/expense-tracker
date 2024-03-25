@@ -32,12 +32,12 @@ const createExpenseEditWindow = (expense, year) => {
     const win = new BrowserWindow({
         height: 510,
         width: 900,
-        resizable: false,
+        //resizable: false,
         webPreferences: {
             preload: path.join(paths.editExpenseFolderPath, 'editExpense-preload.js')
         }
     })
-    //win.webContents.openDevTools()
+    win.webContents.openDevTools()
     win.loadFile(path.join(paths.editExpenseFolderPath, 'editExpense.html'),
         {search: `?year=${year}&expense=${JSON.stringify(expense)}`})
 }
