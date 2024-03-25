@@ -55,7 +55,6 @@ elements.forEach(element => {
 })
 
 function orderBy(uniqueCategories) {
-    console.log(order_select.value)
     if(order_select.value === 'alphabetical') {
         return uniqueCategories.sort((a, b) => a.type.localeCompare(b.type));
     }

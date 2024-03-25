@@ -84,7 +84,6 @@ function createTotalRow() {
     const td = document.createElement('td');
     td.textContent = 'Totale';
     totalRow.appendChild(td);
-    console.log(yearsList)
     for (let year of yearsList) {
         let td = document.createElement('td');
         td.textContent = sumExpensesByYear(year);

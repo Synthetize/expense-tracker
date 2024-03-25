@@ -13,9 +13,7 @@ function editExpenseHandler () {
 
         // Se la spesa esiste, aggiorna i suoi valori
         if (index !== -1) {
-            console.log('Aggiornamento spesa')
             expenses[index] = expense;
-            console.log(expenses[index])
         }
 
         // Scrivi di nuovo il file JSON
@@ -33,7 +31,6 @@ function editExpenseHandler () {
 
         // Se la spesa esiste, elimina la spesa
         if (index !== -1) {
-            console.log('Eliminazione spesa')
             expenses.splice(index, 1);
         }
 

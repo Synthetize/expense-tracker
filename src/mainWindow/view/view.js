@@ -157,9 +157,7 @@ function sortByCategory(expenses, categories) {
     expenses.sort((a, b) => {
         // Trova le categorie corrispondenti per ogni spesa
         const categoryA = categories.find(category => category.id === a.category);
-        console.log(categoryA)
         const categoryB = categories.find(category => category.id === b.category);
-        console.log(categoryB)
 
         // Confronta i nomi delle categorie
         return categoryA.type.localeCompare(categoryB.type);
