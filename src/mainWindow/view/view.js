@@ -194,9 +194,9 @@ function updateTable(expenses) {
                 cell.style.textAlign = 'right';
             } else if (key === 'description') {
                 cell.innerText = breakStringIntoChunks(expense[key], 70);
-                cell.style.textAlign = 'center';
+                cell.style.textAlign = 'left';
             } else {
-                cell.style.textAlign = 'center';
+                cell.style.textAlign = 'right';
                 cell.innerText = expense[key];
             }
             row.appendChild(cell);

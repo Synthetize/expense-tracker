@@ -10,10 +10,14 @@ window.electron.getCategoryDetailsByYear(year, categoryId).then(async expenses =
     for (const expense of expenses) {
         expense.category = categoryType;
         expense.date = expense.date.split('-').reverse().join('-');
+        expense.amount = expense.amount.toFixed(2);
         let row = document.createElement('tr');
         Object.keys(expense).forEach(key => {
             const cell = document.createElement('td');
             cell.innerText = expense[key];
+            if (key === 'description') {
+                cell.style.textAlign = 'left';
+            }
             row.style.textAlign = 'right';
             row.appendChild(cell);
         })
