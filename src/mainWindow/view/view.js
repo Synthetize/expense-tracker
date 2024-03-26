@@ -74,9 +74,9 @@ function populateCategoriesSelect(categories) {
     });
 }
 
-const firstRadioButton = document.querySelector('#radio-form input[type="radio"]:first-child');
-firstRadioButton.checked = true;
-radioForm.value = firstRadioButton.value;
+// const firstRadioButton = document.querySelector('#radio-form input[type="radio"]:first-child');
+// firstRadioButton.checked = true;
+// radioForm.value = firstRadioButton.value;
 
 yearSelect.addEventListener('change', async () => {
     expensesList = await window.electron.getExpensesByYear(yearSelect.value);

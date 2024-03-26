@@ -6,7 +6,7 @@ const paths = require('./paths')
 const createMainWindow = () => {
     const win = new BrowserWindow({
         minHeight: 720,
-        minWidth: 1100,
+        minWidth: 1200,
         webPreferences: {
             preload: path.join(paths.mainWindowPath, 'preload.js')
         }
@@ -53,7 +53,7 @@ function createCategoryDetailsWindow(year, category, categoryType, fromDate, toD
             enableRemoteModule: false
         }
     })
-    win.webContents.openDevTools()
+    //win.webContents.openDevTools()
     win.loadFile(path.join(paths.categoryDetailsFolderPath, 'categoryDetails.html'),
         {search: `?year=${year}&categoryId=${category}&categoryType=${categoryType}&fromDate=${fromDate}&toDate=${toDate}`})
 }
