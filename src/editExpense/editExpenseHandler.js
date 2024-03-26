@@ -1,4 +1,4 @@
-const {ipcMain, app} = require('electron')
+const {ipcMain, webContents} = require('electron')
 const path = require('path')
 const fs = require('fs')
 const fs_extra = require('fs-extra')
@@ -18,7 +18,8 @@ function editExpenseHandler () {
 
         // Scrivi di nuovo il file JSON
         await fs_extra.writeJson(filePath, expenses, {spaces: 2})
-        event.sender.send('expense-updated', expense)
+        // Invia un messaggio alla finestra principale per aggiornare la tabella
+        webContents.fromId(1).send('expense-updated')
     })
 
 
@@ -36,7 +37,7 @@ function editExpenseHandler () {
 
         // Scrivi di nuovo il file JSON
         await fs_extra.writeJson(filePath, expenses, {spaces: 2})
-        event.sender.send('expense-deleted', expenseId)
+        webContents.fromId(1).send('expense-deleted')
     })
 
 }
