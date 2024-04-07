@@ -15,6 +15,9 @@ function goBack() {
     window.history.back();
 }
 
+window.electron.refreshOnExpenseEdit()
+window.electron.refreshOnExpenseDelete()
+
 
 async function fetchData() {
     yearsList = await window.electron.getYears()
@@ -26,7 +29,6 @@ fetchData().then(() => {
     categoriesList = categoriesList.sort((a, b) => a.type.localeCompare(b.type));
     populateYearsSelect(yearsList);
     const uniqueCategories = findUniqueCategoriesAndRelatedIds(expensesList)
-    console.log(uniqueCategories)
     populateCategoriesSelect(uniqueCategories);
     applyFilter();
 })
@@ -72,9 +74,9 @@ function populateCategoriesSelect(categories) {
     });
 }
 
-const firstRadioButton = document.querySelector('#radio-form input[type="radio"]:first-child');
-firstRadioButton.checked = true;
-radioForm.value = firstRadioButton.value;
+// const firstRadioButton = document.querySelector('#radio-form input[type="radio"]:first-child');
+// firstRadioButton.checked = true;
+// radioForm.value = firstRadioButton.value;
 
 yearSelect.addEventListener('change', async () => {
     expensesList = await window.electron.getExpensesByYear(yearSelect.value);
@@ -155,9 +157,7 @@ function sortByCategory(expenses, categories) {
     expenses.sort((a, b) => {
         // Trova le categorie corrispondenti per ogni spesa
         const categoryA = categories.find(category => category.id === a.category);
-        console.log(categoryA)
         const categoryB = categories.find(category => category.id === b.category);
-        console.log(categoryB)
 
         // Confronta i nomi delle categorie
         return categoryA.type.localeCompare(categoryB.type);
@@ -194,9 +194,9 @@ function updateTable(expenses) {
                 cell.style.textAlign = 'right';
             } else if (key === 'description') {
                 cell.innerText = breakStringIntoChunks(expense[key], 70);
-                cell.style.textAlign = 'center';
+                cell.style.textAlign = 'left';
             } else {
-                cell.style.textAlign = 'center';
+                cell.style.textAlign = 'left';
                 cell.innerText = expense[key];
             }
             row.appendChild(cell);

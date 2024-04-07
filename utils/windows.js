@@ -6,12 +6,12 @@ const paths = require('./paths')
 const createMainWindow = () => {
     const win = new BrowserWindow({
         minHeight: 720,
-        minWidth: 1100,
+        minWidth: 1200,
         webPreferences: {
             preload: path.join(paths.mainWindowPath, 'preload.js')
         }
     })
-    win.webContents.openDevTools()
+    //win.webContents.openDevTools()
     win.loadFile(path.join(paths.mainWindowPath, 'index', 'index.html'))
     return win
 }
@@ -42,7 +42,7 @@ const createExpenseEditWindow = (expense, year) => {
         {search: `?year=${year}&expense=${JSON.stringify(expense)}`})
 }
 
-function createCategoryDetailsWindow(year, category, categoryType) {
+function createCategoryDetailsWindow(year, category, categoryType, fromDate, toDate) {
     const win = new BrowserWindow({
         minHeight: 720,
         minWidth: 1100,
@@ -55,7 +55,7 @@ function createCategoryDetailsWindow(year, category, categoryType) {
     })
     //win.webContents.openDevTools()
     win.loadFile(path.join(paths.categoryDetailsFolderPath, 'categoryDetails.html'),
-        {search: `?year=${year}&categoryId=${category}&categoryType=${categoryType}`})
+        {search: `?year=${year}&categoryId=${category}&categoryType=${categoryType}&fromDate=${fromDate}&toDate=${toDate}`})
 }
 
 

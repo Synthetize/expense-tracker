@@ -59,8 +59,8 @@ function mainWindowHandler() {
         createExpenseEditWindow(expense, year)
     })
 
-    ipcMain.on('open-category-expense-details-window', (event, year, categoryId, categoryType) => {
-        createCategoryDetailsWindow(year, categoryId, categoryType)
+    ipcMain.on('open-category-expense-details-window', (event, year, categoryId, categoryType, fromDate, toDate) => {
+        createCategoryDetailsWindow(year, categoryId, categoryType, fromDate, toDate)
     })
 
     ipcMain.handle('update-category', async (event, category) => {

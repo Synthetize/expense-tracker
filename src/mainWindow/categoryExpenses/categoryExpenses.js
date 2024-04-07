@@ -55,7 +55,6 @@ elements.forEach(element => {
 })
 
 function orderBy(uniqueCategories) {
-    console.log(order_select.value)
     if(order_select.value === 'alphabetical') {
         return uniqueCategories.sort((a, b) => a.type.localeCompare(b.type));
     }
@@ -82,7 +81,7 @@ function updateTable() {
             tdSum.style.textAlign = 'right';
             tr.appendChild(tdSum);
             tr.addEventListener('click', async () => {
-                window.electron.openCategoryExpenseDetailsWindow(year_select.value, category.id, category.type)
+                window.electron.openCategoryExpenseDetailsWindow(year_select.value, category.id, category.type, fromDate.value, toDate.value);
             })
             tbody.appendChild(tr);
         }
