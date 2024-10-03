@@ -38,6 +38,9 @@ window.electron.getCategoryDetailsByYear(year, categoryId).then(async expenses =
         let row = document.createElement('tr');
         Object.keys(expense).forEach(key => {
             const cell = document.createElement('td');
+            cell.addEventListener('click', () => {
+                window.electron.openExpenseEditWindow(expense, year);
+            })
             cell.innerText = expense[key];
             if (key === 'description') {
                 cell.style.textAlign = 'left';
