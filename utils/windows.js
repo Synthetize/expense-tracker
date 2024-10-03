@@ -28,6 +28,18 @@ const createConverterWindow = () => {
     win.loadFile(path.join(paths.converterPath, 'converter.html'))
 }
 
+const createDeleteYearWindow = () => {
+    const win = new BrowserWindow({
+        width: 250,
+        height: 230,
+        resizable: false,
+        webPreferences: {
+            preload: path.join(paths.deleteYearPath, 'deleteYear-preload.js')
+        }
+    })
+    win.loadFile(path.join(paths.deleteYearPath, 'deleteYear.html'))
+}
+
 const createExpenseEditWindow = (expense, year) => {
     const win = new BrowserWindow({
         height: 510,
@@ -64,4 +76,5 @@ module.exports = {
     createConverterWindow,
     createExpenseEditWindow,
     createCategoryDetailsWindow,
+    createDeleteYearWindow
 }

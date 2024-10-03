@@ -1,10 +1,11 @@
 const {app, BrowserWindow, Menu} = require('electron')
 
-const {createMainWindow, createConverterWindow} = require('./utils/windows')
+const {createMainWindow, createConverterWindow, createExpenseEditWindow, createDeleteYearWindow} = require('./utils/windows')
 const {mainWindowHandler} = require('./src/mainWindow/mainWindowHandler')
 const {converterHandler} = require('./src/converter/ConverterHandler')
 const {categoryDetailsHandler} = require('./src/categoryDetails/CategoryDetailsHandler')
 const {editExpenseHandler} = require("./src/editExpense/editExpenseHandler");
+const {deleteYearHandler} = require("./src/deleteYear/deleteYearHandler");
 
 const menuItems = [
     {
@@ -22,9 +23,15 @@ const menuItems = [
         label: 'File',
         submenu: [
             {
-                label: 'Open converter',
+                label: 'Convertitore',
                 click: () => {
                     createConverterWindow()
+                }
+            },
+            {
+                label:"Elimina anno",
+                click: () => {
+                    createDeleteYearWindow()
                 }
             }
         ]
@@ -59,6 +66,7 @@ mainWindowHandler()
 converterHandler()
 categoryDetailsHandler()
 editExpenseHandler()
+deleteYearHandler()
 
 
 
