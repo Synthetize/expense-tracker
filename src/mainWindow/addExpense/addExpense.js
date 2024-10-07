@@ -6,6 +6,7 @@ const select_categories = document.getElementById('expense-category');
 const submitButton = document.getElementById('submit');
 const confirmAlert = document.getElementById('confirm-alert');
 const errorAlert = document.getElementById('error-alert');
+const inputDate = document.getElementById('expense-date');
 
 
 errorAlert.style.display = 'none';
@@ -81,6 +82,22 @@ function validateFields() {
     }
     return true;
 }
+
+inputDate.addEventListener('input', function (e) {
+    const dateValue = inputDate.value;
+    console.log(dateValue);
+    const parts = dateValue.split('-');
+
+        const year = parts[0];
+        if (year.length > 4) {
+            // Trunca l'anno a 4 cifre
+            parts[0] = year.slice(1);
+            console.log(parts.join('-'));
+            inputDate.value = parts.join('-');
+        }
+});
+
+
 
 submitButton.addEventListener('click', async (event) => {
     localStorage.setItem('lastSelectedCategory', select_categories.value);
