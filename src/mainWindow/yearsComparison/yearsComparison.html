@@ -13,6 +13,15 @@
         #comparison-table td, #comparison-table th {
             padding: 0 15px; /* Modifica il valore a seconda delle tue esigenze */
         }
+
+        /* Lock the first column of the year comparison table */
+        th:first-child,
+        td:first-child {
+            position: sticky;
+            left: 0;
+            background: #f0f0f0;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
