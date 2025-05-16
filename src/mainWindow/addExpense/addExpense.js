@@ -141,20 +141,22 @@ async function createInstallment() {
     let date = new Date(document.getElementById('expense-date').value);
     let currentYear = date.getFullYear();
     let expenses = await window.electron.getExpensesByYear(currentYear);
+    console.log("start date", date);
 
     for (let i = 0; i < installment_number.value; i++) {
+        let tempDate = await window.electron.addMonths(date, i);
 
         // Controlla se l'anno è cambiato
-        if (date.getFullYear() !== currentYear) {
+        if (tempDate.getFullYear() !== currentYear) {
             // Se l'anno è cambiato, leggi il nuovo file delle spese
-            currentYear = date.getFullYear();
+            currentYear = tempDate.getFullYear();
             expenses = await window.electron.getExpensesByYear(currentYear);
         }
 
         const installment = {
             id: expenses.length === 0 ? 0 : expenses[expenses.length - 1].id + 1,
             subject: document.getElementById('expense-subject').value,
-            date: date.toISOString().slice(0, 10),
+            date: await window.electron.formatDate(tempDate),
             category: parseInt(document.getElementById('expense-category').value),
             amount: parseFloat(document.getElementById('expense-amount').value),
             description: document.getElementById('expense-description').value +
@@ -164,8 +166,6 @@ async function createInstallment() {
 
         // Salva le spese dopo aver aggiunto l'installment
         await window.electron.saveExpensesByYear(currentYear, expenses);
-
-        date.setMonth(date.getMonth() + 1);
     }
     displaySuccessAlert('Rate create con successo');
 }

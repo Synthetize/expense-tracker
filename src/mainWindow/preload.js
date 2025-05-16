@@ -9,7 +9,8 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 })
 
-const { contextBridge , ipcRenderer} = require('electron')
+
+const {contextBridge, ipcRenderer} = require('electron')
 contextBridge.exposeInMainWorld('electron', {
     getYears: () => ipcRenderer.invoke('get-years'),
     getSubjects: () => ipcRenderer.invoke('get-subjects'),
@@ -25,6 +26,10 @@ contextBridge.exposeInMainWorld('electron', {
     }),
     refreshOnExpenseDelete: () => ipcRenderer.on('expense-deleted', () => {
         window.location.reload();
-    })
+    }),
+    addMonths: (date, months) => ipcRenderer.invoke('add-months', date, months),
+    formatDate: (date) => ipcRenderer.invoke('format-date', date),
 })
+
+
 

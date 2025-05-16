@@ -5,6 +5,7 @@ const fs_extra = require('fs-extra')
 const {expensesFolderPath, subjectsFilePath, categoriesFilesPath} = require('../../utils/paths')
 const {createExpenseEditWindow, createCategoryDetailsWindow} = require('../../utils/windows')
 const paths = require("../../utils/paths");
+const {addMonths, format} = require('date-fns')
 
 
 function mainWindowHandler() {
@@ -92,6 +93,15 @@ function mainWindowHandler() {
         await fs_extra.writeJson(paths.categoriesFilesPath, categories, {spaces: 2})
         return {success: true, message: 'Categoria aggiunta con successo!'}
     })
+
+    ipcMain.handle('add-months', (event, date, months) => {
+        return addMonths(date, months)
+    })
+
+    ipcMain.handle('format-date', (event, date) => {
+        return format(date, 'yyyy-MM-dd')
+    })
 }
+
 
 module.exports = {mainWindowHandler}
