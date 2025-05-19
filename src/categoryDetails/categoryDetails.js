@@ -8,7 +8,6 @@ const table = document.getElementById('category-expenses-table')
 const table_body = document.getElementById('table-body');
 
 function filterByDate(expenses) {
-    console.log(fromDate, toDate)
     if (fromDate === '' && toDate === '') {
         return expenses;
     }
@@ -27,10 +26,8 @@ function filterByDate(expenses) {
 
 
 window.electron.getCategoryDetailsByYear(year, categoryId).then(async expenses => {
-    console.log(expenses)
     table_body.innerHTML = '';
     expenses = filterByDate(expenses);
-    console.log(expenses)
     for (const expense of expenses) {
         expense.category = categoryType;
         expense.date = expense.date.split('-').reverse().join('-');

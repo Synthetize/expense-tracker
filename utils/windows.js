@@ -11,7 +11,7 @@ const createMainWindow = () => {
             preload: path.join(paths.mainWindowPath, 'preload.js')
         }
     })
-    win.webContents.openDevTools()
+    //win.webContents.openDevTools()
     win.loadFile(path.join(paths.mainWindowPath, 'index', 'index.html'))
     return win
 }

@@ -85,14 +85,12 @@ function validateFields() {
 
 inputDate.addEventListener('input', function (e) {
     const dateValue = inputDate.value;
-    console.log(dateValue);
     const parts = dateValue.split('-');
 
         const year = parts[0];
         if (year.length > 4) {
             // Trunca l'anno a 4 cifre
             parts[0] = year.slice(1);
-            console.log(parts.join('-'));
             inputDate.value = parts.join('-');
         }
 });
@@ -141,7 +139,6 @@ async function createInstallment() {
     let date = new Date(document.getElementById('expense-date').value);
     let currentYear = date.getFullYear();
     let expenses = await window.electron.getExpensesByYear(currentYear);
-    console.log("start date", date);
 
     for (let i = 0; i < installment_number.value; i++) {
         let tempDate = await window.electron.addMonths(date, i);
