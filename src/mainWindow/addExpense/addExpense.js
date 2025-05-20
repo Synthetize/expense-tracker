@@ -114,6 +114,8 @@ submitButton.addEventListener('click', async (event) => {
         document.getElementById('expense-amount').value = '';
         document.getElementById('expense-description').value = '';
         installment_checkbox.checked = false;
+        installment_number.disabled = true;
+        installment_number.value = null;
     }
 })
 
